@@ -1,247 +1,255 @@
 {% extends 'base.html' %}
 
-{% block title %}About - KRUSHIMITRA{% endblock %}
+{% block title %}{{ _('About - KRUSHIMITRA') }}{% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="row mb-4">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">About</li>
-                </ol>
-            </nav>
-        </div>
+  <div class="row mb-4">
+    <div class="col-12">
+      <nav aria-label="{{ _('breadcrumb') }}">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">{{ _('Home') }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ _('About') }}</li>
+        </ol>
+      </nav>
     </div>
-    
-    <div class="project-banner mb-4">
-        <h1>KRUSHIMITRA</h1>
-        <p class="tagline">जय जवान जय किसान</p>
-        <p class="lead">An EDA Project by Yash Raut</p>
-    </div>
-    
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card mb-4">
-                <div class="card-header bg-success text-white">
-                    <h2 class="mb-0"><i class="fas fa-info-circle me-2"></i>About the Project</h2>
-                </div>
-                <div class="card-body">
-                    <h3 class="mb-3">KRUSHIMITRA: Smart Crop Recommendation System</h3>
-                    <p class="lead">
-                        This project leverages machine learning to recommend optimal crops based on soil nutrient content and environmental conditions.
-                    </p>
-                    
-                    <p>
-                        Agriculture plays a critical role in India's economic development and is the backbone of our agrarian economy. 
-                        By using machine learning to recommend crops, we can increase agricultural productivity and sustainability.
-                        Our system analyzes soil composition (Nitrogen, Phosphorus, Potassium), weather conditions (temperature, humidity, rainfall), 
-                        and soil pH to recommend the crop most likely to thrive in those conditions.
-                    </p>
-                    
-                    <h4 class="mt-4 mb-3"><i class="fas fa-cogs text-success me-2"></i>How It Works</h4>
-                    <p>
-                        Our system uses a Random Forest classification algorithm trained on a comprehensive dataset of crop growth conditions.
-                        This model identifies complex patterns in the data to provide accurate crop recommendations.
-                    </p>
-                    
-                    <div class="card bg-light mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title text-success">Technical Implementation</h5>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-light">
-                                    <strong>Machine Learning Model:</strong> Random Forest Classifier with hyperparameter tuning
-                                </li>
-                                <li class="list-group-item bg-light">
-                                    <strong>Web Application:</strong> Flask framework with responsive Bootstrap UI
-                                </li>
-                                <li class="list-group-item bg-light">
-                                    <strong>Data Preprocessing:</strong> MinMaxScaler and StandardScaler for feature normalization
-                                </li>
-                                <li class="list-group-item bg-light">
-                                    <strong>Evaluation Metrics:</strong> Classification accuracy, cross-validation, detailed classification reports
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <h4 class="mt-4 mb-3"><i class="fas fa-leaf text-success me-2"></i>Benefits</h4>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fas fa-coins text-warning me-2"></i>Economic</h5>
-                                    <ul>
-                                        <li>Increased crop yields</li>
-                                        <li>Optimized resource utilization</li>
-                                        <li>Reduced crop failure risks</li>
-                                        <li>Better return on investment</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fas fa-globe-americas text-info me-2"></i>Environmental</h5>
-                                    <ul>
-                                        <li>Sustainable farming practices</li>
-                                        <li>Reduced fertilizer waste</li>
-                                        <li>Optimal land utilization</li>
-                                        <li>Better water resource management</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Team Section -->
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0"><i class="fas fa-users me-2"></i>Our Team</h2>
-                </div>
-                <div class="card-body">
-                    <p class="lead text-center mb-4">
-                        KRUSHIMITRA is an Exploratory Data Analysis project developed by students of AISSMS IOIT, Pune
-                    </p>
-                    
-                    <div class="row mt-4">
-                        <div class="col-md-4">
-                            <div class="team-member">
-                                <img src="/static/img/team_placeholder.png" alt="Pranav Ladkat">
-                                <h5>Pranav Ladkat</h5>
-                                <p class="role">Team Lead & ML Engineer</p>
-                                <div class="student-info">
-                                    <p><i class="fas fa-graduation-cap me-2"></i>AISSMS IOIT</p>
-                                    <p><i class="fas fa-user-graduate me-2"></i>Second Year</p>
-                                    <p><i class="fas fa-laptop-code me-2"></i>Artificial Intelligence</p>
-                                    <p><i class="fas fa-id-badge me-2"></i>B-08</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="team-member">
-                                <img src="/static/img/team_placeholder.png" alt="Snehal Mane">
-                                <h5>Snehal Mane</h5>
-                                <p class="role">Data Scientist & Backend Developer</p>
-                                <div class="student-info">
-                                    <p><i class="fas fa-graduation-cap me-2"></i>AISSMS IOIT</p>
-                                    <p><i class="fas fa-user-graduate me-2"></i>Second Year</p>
-                                    <p><i class="fas fa-laptop-code me-2"></i>Artificial Intelligence</p>
-                                    <p><i class="fas fa-id-badge me-2"></i>B-12</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="team-member">
-                                <img src="/static/img/team_placeholder.png" alt="Pratik Khatke">
-                                <h5>Pratik Khatke</h5>
-                                <p class="role">UI/UX Designer & Frontend Developer</p>
-                                <div class="student-info">
-                                    <p><i class="fas fa-graduation-cap me-2"></i>AISSMS IOIT</p>
-                                    <p><i class="fas fa-user-graduate me-2"></i>Second Year</p>
-                                    <p><i class="fas fa-laptop-code me-2"></i>Artificial Intelligence</p>
-                                    <p><i class="fas fa-id-badge me-2"></i>B-02</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center mt-4">
-                        <div class="card bg-light p-3">
-                            <h5 class="text-success">Guided By Faculty</h5>
-                            <p>Department of Computer Engineering<br>AISSMS Institute of Information Technology, Pune</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  </div>
+
+  <div class="project-banner mb-4">
+    <h1>{{ _('KRUSHIMITRA') }}</h1>
+    <p class="tagline">{{ _('जय जवान जय किसान') }}</p>
+    <p class="lead">{{ _('An EDA Project by Yash Raut') }}</p>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h2 class="mb-0"><i class="fas fa-info-circle me-2"></i>{{ _('About the Project') }}</h2>
         </div>
-        
-        <div class="col-lg-4">
-            <div class="card mb-4">
-                <div class="card-header bg-success text-white">
-                    <h3 class="mb-0"><i class="fas fa-database me-2"></i>Data Sources</h3>
-                </div>
+        <div class="card-body">
+          <h3 class="mb-3">{{ _('KRUSHIMITRA: Smart Crop Recommendation System') }}</h3>
+
+          <p class="lead">
+            {% trans %}
+            This project leverages machine learning to recommend optimal crops based on soil nutrient content and environmental conditions.
+            {% endtrans %}
+          </p>
+
+          <p>
+            {% trans %}
+            Agriculture plays a critical role in India's economic development and is the backbone of our agrarian economy.
+            By using machine learning to recommend crops, we can increase agricultural productivity and sustainability.
+            Our system analyzes soil composition (Nitrogen, Phosphorus, Potassium), weather conditions (temperature, humidity, rainfall),
+            and soil pH to recommend the crop most likely to thrive in those conditions.
+            {% endtrans %}
+          </p>
+
+          <h4 class="mt-4 mb-3"><i class="fas fa-cogs text-success me-2"></i>{{ _('How It Works') }}</h4>
+          <p>
+            {% trans %}
+            Our system uses a Random Forest classification algorithm trained on a comprehensive dataset of crop growth conditions.
+            This model identifies complex patterns in the data to provide accurate crop recommendations.
+            {% endtrans %}
+          </p>
+
+          <div class="card bg-light mb-4">
+            <div class="card-body">
+              <h5 class="card-title text-success">{{ _('Technical Implementation') }}</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-light">
+                  <strong>{{ _('Machine Learning Model:') }}</strong> {{ _('Random Forest Classifier with hyperparameter tuning') }}
+                </li>
+                <li class="list-group-item bg-light">
+                  <strong>{{ _('Web Application:') }}</strong> {{ _('Flask framework with responsive Bootstrap UI') }}
+                </li>
+                <li class="list-group-item bg-light">
+                  <strong>{{ _('Data Preprocessing:') }}</strong> {{ _('MinMaxScaler and StandardScaler for feature normalization') }}
+                </li>
+                <li class="list-group-item bg-light">
+                  <strong>{{ _('Evaluation Metrics:') }}</strong> {{ _('Classification accuracy, cross-validation, detailed classification reports') }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <h4 class="mt-4 mb-3"><i class="fas fa-leaf text-success me-2"></i>{{ _('Benefits') }}</h4>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card h-100">
                 <div class="card-body">
-                    <p>The model is trained on the Crop Recommendation Dataset containing 2200 samples with the following attributes:</p>
-                    
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-flask text-primary me-2"></i>Nitrogen (N)</span>
-                            <span class="badge bg-success rounded-pill">kg/ha</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-atoms text-primary me-2"></i>Phosphorus (P)</span>
-                            <span class="badge bg-success rounded-pill">kg/ha</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-leaf text-primary me-2"></i>Potassium (K)</span>
-                            <span class="badge bg-success rounded-pill">kg/ha</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-temperature-high text-danger me-2"></i>Temperature</span>
-                            <span class="badge bg-danger rounded-pill">°C</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-tint text-info me-2"></i>Humidity</span>
-                            <span class="badge bg-info rounded-pill">%</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-vial text-warning me-2"></i>pH</span>
-                            <span class="badge bg-warning text-dark rounded-pill">pH</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="fas fa-cloud-rain text-primary me-2"></i>Rainfall</span>
-                            <span class="badge bg-primary rounded-pill">mm</span>
-                        </li>
-                    </ul>
+                  <h5 class="card-title"><i class="fas fa-coins text-warning me-2"></i>{{ _('Economic') }}</h5>
+                  <ul>
+                    <li>{{ _('Increased crop yields') }}</li>
+                    <li>{{ _('Optimized resource utilization') }}</li>
+                    <li>{{ _('Reduced crop failure risks') }}</li>
+                    <li>{{ _('Better return on investment') }}</li>
+                  </ul>
                 </div>
+              </div>
             </div>
-            
-            <div class="card mb-4">
-                <div class="card-header bg-info text-white">
-                    <h3 class="mb-0"><i class="fas fa-seedling me-2"></i>Supported Crops</h3>
-                </div>
+            <div class="col-md-6">
+              <div class="card h-100">
                 <div class="card-body">
-                    <p>Our system can recommend the following crops based on your inputs:</p>
-                    
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Rice</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Maize</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Jute</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Cotton</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Orange</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Apple</li>
-                               
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Mango</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Banana</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Chickpea</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Coffee</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Watermelon</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Grapes</li>
-                            </ul>
-                        </div>
-                    </div>
+                  <h5 class="card-title"><i class="fas fa-globe-americas text-info me-2"></i>{{ _('Environmental') }}</h5>
+                  <ul>
+                    <li>{{ _('Sustainable farming practices') }}</li>
+                    <li>{{ _('Reduced fertilizer waste') }}</li>
+                    <li>{{ _('Optimal land utilization') }}</li>
+                    <li>{{ _('Better water resource management') }}</li>
+                  </ul>
                 </div>
+              </div>
             </div>
-            
-            <div class="card">
-                <div class="card-body text-center bg-light">
-                    <img src="/static/img/farming.png" alt="Farming" class="img-fluid mb-3" style="max-height: 150px;">
-                    <h5 class="text-success">"जय जवान जय किसान"</h5>
-                    <p class="font-italic">"Jai Jawan Jai Kisan" - Lal Bahadur Shastri</p>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Team Section -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0"><i class="fas fa-users me-2"></i>{{ _('Our Team') }}</h2>
+        </div>
+        <div class="card-body">
+          <p class="lead text-center mb-4">
+            {% trans %}KRUSHIMITRA is an Exploratory Data Analysis project developed by students of AISSMS IOIT, Pune{% endtrans %}
+          </p>
+
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="team-member">
+                <img src="/static/img/team_placeholder.png" alt="Pranav Ladkat">
+                <h5>Pranav Ladkat</h5>
+                <p class="role">{{ _('Team Lead & ML Engineer') }}</p>
+                <div class="student-info">
+                  <p><i class="fas fa-graduation-cap me-2"></i>{{ _('AISSMS IOIT') }}</p>
+                  <p><i class="fas fa-user-graduate me-2"></i>{{ _('Second Year') }}</p>
+                  <p><i class="fas fa-laptop-code me-2"></i>{{ _('Artificial Intelligence') }}</p>
+                  <p><i class="fas fa-id-badge me-2"></i>B-08</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="team-member">
+                <img src="/static/img/team_placeholder.png" alt="Snehal Mane">
+                <h5>Snehal Mane</h5>
+                <p class="role">{{ _('Data Scientist & Backend Developer') }}</p>
+                <div class="student-info">
+                  <p><i class="fas fa-graduation-cap me-2"></i>{{ _('AISSMS IOIT') }}</p>
+                  <p><i class="fas fa-user-graduate me-2"></i>{{ _('Second Year') }}</p>
+                  <p><i class="fas fa-laptop-code me-2"></i>{{ _('Artificial Intelligence') }}</p>
+                  <p><i class="fas fa-id-badge me-2"></i>B-12</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="team-member">
+                <img src="/static/img/team_placeholder.png" alt="Pratik Khatke">
+                <h5>Pratik Khatke</h5>
+                <p class="role">{{ _('UI/UX Designer & Frontend Developer') }}</p>
+                <div class="student-info">
+                  <p><i class="fas fa-graduation-cap me-2"></i>{{ _('AISSMS IOIT') }}</p>
+                  <p><i class="fas fa-user-graduate me-2"></i>{{ _('Second Year') }}</p>
+                  <p><i class="fas fa-laptop-code me-2"></i>{{ _('Artificial Intelligence') }}</p>
+                  <p><i class="fas fa-id-badge me-2"></i>B-02</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <div class="card bg-light p-3">
+              <h5 class="text-success">{{ _('Guided By Faculty') }}</h5>
+              <p>{% trans %}Department of Computer Engineering{% endtrans %}<br>{% trans %}AISSMS Institute of Information Technology, Pune{% endtrans %}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h3 class="mb-0"><i class="fas fa-database me-2"></i>{{ _('Data Sources') }}</h3>
+        </div>
+        <div class="card-body">
+          <p>{% trans %}The model is trained on the Crop Recommendation Dataset containing 2200 samples with the following attributes:{% endtrans %}</p>
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-flask text-primary me-2"></i>{{ _('Nitrogen (N)') }}</span>
+              <span class="badge bg-success rounded-pill">{{ _('kg/ha') }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-atoms text-primary me-2"></i>{{ _('Phosphorus (P)') }}</span>
+              <span class="badge bg-success rounded-pill">{{ _('kg/ha') }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-leaf text-primary me-2"></i>{{ _('Potassium (K)') }}</span>
+              <span class="badge bg-success rounded-pill">{{ _('kg/ha') }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-temperature-high text-danger me-2"></i>{{ _('Temperature') }}</span>
+              <span class="badge bg-danger rounded-pill">°C</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-tint text-info me-2"></i>{{ _('Humidity') }}</span>
+              <span class="badge bg-info rounded-pill">%</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-vial text-warning me-2"></i>{{ _('pH') }}</span>
+              <span class="badge bg-warning text-dark rounded-pill">{{ _('pH') }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-cloud-rain text-primary me-2"></i>{{ _('Rainfall') }}</span>
+              <span class="badge bg-primary rounded-pill">{{ _('mm') }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+          <h3 class="mb-0"><i class="fas fa-seedling me-2"></i>{{ _('Supported Crops') }}</h3>
+        </div>
+        <div class="card-body">
+          <p>{% trans %}Our system can recommend the following crops based on your inputs:{% endtrans %}</p>
+
+          <div class="row g-2">
+            <div class="col-6">
+              <ul class="list-unstyled">
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Rice') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Maize') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Jute') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Cotton') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Orange') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Apple') }}</li>
+              </ul>
+            </div>
+            <div class="col-6">
+              <ul class="list-unstyled">
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Mango') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Banana') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Chickpea') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Coffee') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Watermelon') }}</li>
+                <li><i class="fas fa-check-circle text-success me-2"></i>{{ _('Grapes') }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body text-center bg-light">
+          <img src="/static/img/farming.png" alt="{{ _('Farming') }}" class="img-fluid mb-3" style="max-height: 150px;">
+          <h5 class="text-success">"{{ _('जय जवान जय किसान') }}"</h5>
+          <p class="font-italic">"{{ _('Jai Jawan Jai Kisan') }}" - {{ _('Lal Bahadur Shastri') }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock %} 
+{% endblock %}

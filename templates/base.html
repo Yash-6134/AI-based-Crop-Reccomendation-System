@@ -1,93 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ get_locale() }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}KRUSHIMITRA - Smart Crop Recommendation{% endblock %}</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css">
-    
-    {% block extra_css %}{% endblock %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ _('KRUSHIMITRA - Smart Crop Recommendation') }}{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-leaf me-2"></i>KRUSHIMITRA
-                <span class="tagline d-none d-lg-inline">| जय जवान जय किसान</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/data-insights"><i class="fas fa-chart-bar me-1"></i> Data Insights</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about"><i class="fas fa-info-circle me-1"></i> About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="container my-4">
-        {% block content %}{% endblock %}
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-leaf me-2"></i>{{ _('KRUSHIMITRA') }}
+        <span class="tagline d-none d-lg-inline">| {{ _('जय जवान जय किसान') }}</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="{{ _('Toggle navigation') }}">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> {{ _('Home') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/data-insights"><i class="fas fa-chart-bar me-1"></i> {{ _('Data Insights') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about"><i class="fas fa-info-circle me-1"></i> {{ _('About') }}</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-leaf me-2"></i>KRUSHIMITRA</h5>
-                    <p class="tagline">जय जवान जय किसान</p>
-                    <p>A machine learning-based crop recommendation system to help farmers make informed decisions.</p>
-                    <p><small>An EDA Project by Pranav Ladkat, Snehal Mane, and Pratik Khatke<br>AISSMS IOIT, Pune</small></p>
-                </div>
-                <div class="col-md-3">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/" class="text-white"><i class="fas fa-angle-right me-2"></i>Home</a></li>
-                        <li><a href="/data-insights" class="text-white"><i class="fas fa-angle-right me-2"></i>Data Insights</a></li>
-                        <li><a href="/about" class="text-white"><i class="fas fa-angle-right me-2"></i>About</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5>API Access</h5>
-                    <p>Access our crop recommendation API for your agricultural applications.</p>
-                    <a href="/api-docs" class="btn btn-outline-light btn-sm">API Documentation</a>
-                </div>
-            </div>
-            <hr>
-            <div class="text-center">
-                <p>KRUSHIMITRA - Agricultural Recommendation System</p>
-            </div>
+  <!-- Main Content -->
+  <div class="container my-4">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5><i class="fas fa-leaf me-2"></i>{{ _('KRUSHIMITRA') }}</h5>
+          <p class="tagline">{{ _('जय जवान जय किसान') }}</p>
+          <p>{{ _('A machine learning-based crop recommendation system to help farmers make informed decisions.') }}</p>
+          <p>
+            <small>
+              {% trans %}An EDA Project by Pranav Ladkat, Snehal Mane, and Pratik Khatke{% endtrans %}<br>
+              {% trans %}AISSMS IOIT, Pune{% endtrans %}
+            </small>
+          </p>
         </div>
-    </footer>
+        <div class="col-md-3">
+          <h5>{{ _('Quick Links') }}</h5>
+          <ul class="list-unstyled">
+            <li><a href="/" class="text-white"><i class="fas fa-angle-right me-2"></i>{{ _('Home') }}</a></li>
+            <li><a href="/data-insights" class="text-white"><i class="fas fa-angle-right me-2"></i>{{ _('Data Insights') }}</a></li>
+            <li><a href="/about" class="text-white"><i class="fas fa-angle-right me-2"></i>{{ _('About') }}</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h5>{{ _('API Access') }}</h5>
+          <p>{% trans %}Access our crop recommendation API for your agricultural applications.{% endtrans %}</p>
+          <a href="/api-docs" class="btn btn-outline-light btn-sm">{{ _('API Documentation') }}</a>
+        </div>
+      </div>
+      <hr>
+      <div class="text-center">
+        <p>{{ _('KRUSHIMITRA - Agricultural Recommendation System') }}</p>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom JS -->
-    <script src="/static/js/main.js"></script>
-    
-    {% block extra_js %}{% endblock %}
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="/static/js/main.js"></script>
+
+  {% block extra_js %}{% endblock %}
 </body>
-</html> 
+</html>

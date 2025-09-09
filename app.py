@@ -1,124 +1,142 @@
-from flask import Flask, render_template, request, jsonify
+# app.py
+from flask import Flask, render_template, request, jsonify, session  # added session
+from flask_babel import Babel, lazy_gettext as _l  # Babel + lazy i18n for globals
 import pandas as pd
 import numpy as np
 import joblib
 import os
 from model import predict_crop, train_crop_recommendation_model
 
-
 app = Flask(__name__)
 
-# Crop descriptions for the UI
+# === Flask-Babel basic config ===
+app.config['SECRET_KEY'] = 'change-me'  # required for storing chosen language in session
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+LANGUAGES = {'en': 'English', 'hi': 'Hindi', 'mr': 'Marathi'}
+
+babel = Babel()
+
+@babel.locale_selector
+def get_locale():
+    # Priority: URL ?lang=xx > saved session > browser header > default
+    lang = request.args.get('lang')
+    if lang in LANGUAGES:
+        session['lang'] = lang
+        return lang
+    return session.get('lang') or request.accept_languages.best_match(LANGUAGES.keys()) or 'en'
+
+babel.init_app(app, default_locale='en')
+
+# Crop descriptions for the UI (wrapped with lazy _l so translation happens per request)
 CROP_INFO = {
     'rice': {
-        'description': '''Best time: Kharif (monsoon); needs warm weather and good water.
-                        Soil and water: Grows well in clay/loam soil; keep field level; avoid very deep water.
-                        Nutrients: Use balanced NPK; do not overuse urea.
-                        Major diseases: Blast, bacterial leaf blight, sheath blight.
-                        Simple solutions: Use resistant seed, treat seed, keep proper spacing, drain excess water; spray as per local agri advice if disease crosses threshold.
-                        Profit idea: Gross = yield per acre × price (MSP/local mandi). Control disease early to protect yield and profit.''',
-        'ideal_conditions': 'N: 80-100, P: 40-60, K: 40-45, Temperature: 20-25°C, Humidity: 80-85%, pH: 6.0-7.0, Rainfall: 200-250mm'
+        'description': _l('''Best time: Kharif (monsoon); needs warm weather and good water.
+                            Soil and water: Grows well in clay/loam soil; keep field level; avoid very deep water.
+                            Nutrients: Use balanced NPK; do not overuse urea.
+                            Major diseases: Blast, bacterial leaf blight, sheath blight.
+                            Simple solutions: Use resistant seed, treat seed, keep proper spacing, drain excess water; spray as per local agri advice if disease crosses threshold.
+                            Profit idea: Gross = yield per acre × price (MSP/local mandi). Control disease early to protect yield and profit.'''),
+        'ideal_conditions': _l('N: 80-100, P: 40-60, K: 40-45, Temperature: 20-25°C, Humidity: 80-85%, pH: 6.0-7.0, Rainfall: 200-250mm')
     },
     'maize': {
-        'description': '''Best time: Kharif and also Rabi in many areas.
-                        Soil and water: Needs well-drained soil; avoid waterlogging.
-                        Nutrients: Starter fertilizer at sowing; top-dress nitrogen at knee-height and tasseling.
-                        Major pest/disease: Fall armyworm, leaf blights.
-                        Simple solutions: Pheromone traps, destroy egg masses, neem-based sprays early; choose tolerant hybrids; rotate crops.
-                        Profit idea: Keep fields weed-free early; timely protection against fall armyworm saves cobs and boosts income.''',
-        'ideal_conditions': 'N: 80-100, P: 50-80, K: 40-60, Temperature: 22-30°C, Humidity: 50-80%, pH: 5.5-7.0, Rainfall: 80-100mm'
+        'description': _l('''Best time: Kharif and also Rabi in many areas.
+                            Soil and water: Needs well-drained soil; avoid waterlogging.
+                            Nutrients: Starter fertilizer at sowing; top-dress nitrogen at knee-height and tasseling.
+                            Major pest/disease: Fall armyworm, leaf blights.
+                            Simple solutions: Pheromone traps, destroy egg masses, neem-based sprays early; choose tolerant hybrids; rotate crops.
+                            Profit idea: Keep fields weed-free early; timely protection against fall armyworm saves cobs and boosts income.'''),
+        'ideal_conditions': _l('N: 80-100, P: 50-80, K: 40-60, Temperature: 22-30°C, Humidity: 50-80%, pH: 5.5-7.0, Rainfall: 80-100mm')
     },
     'jute': {
-        'description': '''Best time: Pre-monsoon to early monsoon.
-                        Soil and water: Moist, well-drained soil; avoid standing water.
-                        Nutrients: Basal NPK; keep weeds low.
-                        Major diseases: Stem/soft rot in waterlogged fields.
-                        Simple solutions: Good drainage, wider spacing where needed, seed treatment, field sanitation.
-                        Profit idea: Proper retting in clean water gives better fibre grade and price.''',
-        'ideal_conditions': 'N: 50-80, P: 40-60, K: 40-50, Temperature: 25-35°C, Humidity: 70-90%, pH: 6.0-7.5, Rainfall: 150-200mm'
+        'description': _l('''Best time: Pre-monsoon to early monsoon.
+                            Soil and water: Moist, well-drained soil; avoid standing water.
+                            Nutrients: Basal NPK; keep weeds low.
+                            Major diseases: Stem/soft rot in waterlogged fields.
+                            Simple solutions: Good drainage, wider spacing where needed, seed treatment, field sanitation.
+                            Profit idea: Proper retting in clean water gives better fibre grade and price.'''),
+        'ideal_conditions': _l('N: 50-80, P: 40-60, K: 40-50, Temperature: 25-35°C, Humidity: 70-90%, pH: 6.0-7.5, Rainfall: 150-200mm')
     },
     'cotton': {
-        'description': '''Best time: Kharif (rainfed/irrigated depending on region).
+        'description': _l('''Best time: Kharif (rainfed/irrigated depending on region).
                             Soil and water: Deep, well-drained soil; avoid excess nitrogen.
                             Nutrients: Balanced NPK with micronutrients; split nitrogen.
                             Major pests/diseases: Pink bollworm, whitefly, boll rot.
                             Simple solutions: Pheromone traps, timely sowing, remove “rosette” flowers, avoid early pyrethroids, use need-based sprays; keep field clean.
-                            Profit idea: Protect bolls during peak fruiting; better lint and more pickings improve returns.''',
-        'ideal_conditions': 'N: 80-120, P: 40-60, K: 40-60, Temperature: 20-30°C, Humidity: 50-80%, pH: 5.5-8.0, Rainfall: 80-120mm'
+                            Profit idea: Protect bolls during peak fruiting; better lint and more pickings improve returns.'''),
+        'ideal_conditions': _l('N: 80-120, P: 40-60, K: 40-60, Temperature: 20-30°C, Humidity: 50-80%, pH: 5.5-8.0, Rainfall: 80-120mm')
     },
     'orange': {
-        'description': '''Best time: Orchard crop; plan planting in mild season.
-                        Soil and water: Well-drained soil; do not let water stand near trunk.
-                        Nutrients: Regular manure + NPK + micronutrients; maintain pH around slightly acidic to neutral.
-                        Major diseases: Citrus canker, greening (HLB), gummosis.
-                        Simple solutions: Use clean planting material, prune for airflow, copper sprays for canker, manage psyllid (HLB vector), protect trunk from injury and rot.
-                        Profit idea: Good canopy and timely sprays increase healthy fruits and market price.''',
-        'ideal_conditions': 'N: 30-60, P: 30-50, K: 30-50, Temperature: 15-30°C, Humidity: 40-70%, pH: 5.5-7.0, Rainfall: 80-150mm'
+        'description': _l('''Best time: Orchard crop; plan planting in mild season.
+                            Soil and water: Well-drained soil; do not let water stand near trunk.
+                            Nutrients: Regular manure + NPK + micronutrients; maintain pH around slightly acidic to neutral.
+                            Major diseases: Citrus canker, greening (HLB), gummosis.
+                            Simple solutions: Use clean planting material, prune for airflow, copper sprays for canker, manage psyllid (HLB vector), protect trunk from injury and rot.
+                            Profit idea: Good canopy and timely sprays increase healthy fruits and market price.'''),
+        'ideal_conditions': _l('N: 30-60, P: 30-50, K: 30-50, Temperature: 15-30°C, Humidity: 40-70%, pH: 5.5-7.0, Rainfall: 80-150mm')
     },
     'apple': {
-        'description': '''Best time: Temperate zones only.
-                        Soil and water: Well-drained loam; avoid waterlogging.
-                        Nutrients: Balanced NPK; prune for light and air.
-                        Major diseases: Scab, powdery mildew, fire blight.
-                        Simple solutions: Orchard sanitation, pruning, protectant/systemic fungicides at key stages as per advisory.
-                        Profit idea: Higher “A-grade” fruit gives better price; disease control at right time improves packout.''',
-        'ideal_conditions': 'N: 20-40, P: 20-40, K: 30-50, Temperature: 15-25°C, Humidity: 40-70%, pH: 5.5-6.5, Rainfall: 80-120mm'
+        'description': _l('''Best time: Temperate zones only.
+                            Soil and water: Well-drained loam; avoid waterlogging.
+                            Nutrients: Balanced NPK; prune for light and air.
+                            Major diseases: Scab, powdery mildew, fire blight.
+                            Simple solutions: Orchard sanitation, pruning, protectant/systemic fungicides at key stages as per advisory.
+                            Profit idea: Higher “A-grade” fruit gives better price; disease control at right time improves packout.'''),
+        'ideal_conditions': _l('N: 20-40, P: 20-40, K: 30-50, Temperature: 15-25°C, Humidity: 40-70%, pH: 5.5-6.5, Rainfall: 80-120mm')
     },
-
     'watermelon': {
-        'description': '''Best time: Warm season; avoid heavy rains during fruiting.
-                        Soil and water: Sandy loam; raised beds and mulch help; drip irrigation is best.
-                        Nutrients: Balanced NPK with extra potassium for sweetness.
-                        Major diseases: Anthracnose, downy mildew, Fusarium wilt.
-                        Simple solutions: Rotate (do not plant after cucurbits), resistant varieties, field sanitation, protectant/systemic fungicides when needed.
-                        Profit idea: Time harvest for peak demand; clean, sweet fruits fetch better price.''',
-        'ideal_conditions': 'N: 20-40, P: 30-50, K: 30-50, Temperature: 22-32°C, Humidity: 50-80%, pH: 6.0-7.0, Rainfall: 40-70mm'
+        'description': _l('''Best time: Warm season; avoid heavy rains during fruiting.
+                            Soil and water: Sandy loam; raised beds and mulch help; drip irrigation is best.
+                            Nutrients: Balanced NPK with extra potassium for sweetness.
+                            Major diseases: Anthracnose, downy mildew, Fusarium wilt.
+                            Simple solutions: Rotate (do not plant after cucurbits), resistant varieties, field sanitation, protectant/systemic fungicides when needed.
+                            Profit idea: Time harvest for peak demand; clean, sweet fruits fetch better price.'''),
+        'ideal_conditions': _l('N: 20-40, P: 30-50, K: 30-50, Temperature: 22-32°C, Humidity: 50-80%, pH: 6.0-7.0, Rainfall: 40-70mm')
     },
     'grapes': {
-        'description': '''Best time: Perennial; pruning and training are key.
-                        Soil and water: Deep, well-drained loam; avoid high salts; maintain pH near neutral.
-                        Nutrients: Balanced feeding with micronutrients; regulate canopy.
-                        Major diseases: Powdery mildew, downy mildew, anthracnose, bunch rot.
-                        Simple solutions: Keep canopy open, remove infected parts, use sulphur/copper and systemic sprays as per schedule; maintain bunch hygiene.
-                        Profit idea: Better brix, berry size, and appearance give higher rates; disease-free bunches raise packout and profit.''',
-        'ideal_conditions': 'N: 20-40, P: 20-40, K: 30-50, Temperature: 15-25°C, Humidity: 60-70%, pH: 6.0-7.0, Rainfall: 60-100mm'
+        'description': _l('''Best time: Perennial; pruning and training are key.
+                            Soil and water: Deep, well-drained loam; avoid high salts; maintain pH near neutral.
+                            Nutrients: Balanced feeding with micronutrients; regulate canopy.
+                            Major diseases: Powdery mildew, downy mildew, anthracnose, bunch rot.
+                            Simple solutions: Keep canopy open, remove infected parts, use sulphur/copper and systemic sprays as per schedule; maintain bunch hygiene.
+                            Profit idea: Better brix, berry size, and appearance give higher rates; disease-free bunches raise packout and profit.'''),
+        'ideal_conditions': _l('N: 20-40, P: 20-40, K: 30-50, Temperature: 15-25°C, Humidity: 60-70%, pH: 6.0-7.0, Rainfall: 60-100mm')
     },
     'mango': {
-        'description': '''Best time: Tropical/sub-tropical; plant in mild weather.
-                        Soil and water: Deep, well-drained soil; avoid waterlogging around trunk.
-                        Nutrients: Manure + NPK; zinc/boron if deficient; prune after harvest.
-                        Major diseases: Anthracnose, powdery mildew, malformation.
-                        Simple solutions: Prune for airflow, orchard sanitation, copper or mancozeb/carbendazim sprays at flowering/fruit set, sulphur for mildew; hot water dip post-harvest if possible.
-                        Profit idea: Clean panicles and healthy fruits reduce post-harvest losses and raise income.''',
-        'ideal_conditions': 'N: 20-40, P: 20-40, K: 30-50, Temperature: 24-30°C, Humidity: 50-80%, pH: 5.5-7.5, Rainfall: 70-150mm'
+        'description': _l('''Best time: Tropical/sub-tropical; plant in mild weather.
+                            Soil and water: Deep, well-drained soil; avoid waterlogging around trunk.
+                            Nutrients: Manure + NPK; zinc/boron if deficient; prune after harvest.
+                            Major diseases: Anthracnose, powdery mildew, malformation.
+                            Simple solutions: Prune for airflow, orchard sanitation, copper or mancozeb/carbendazim sprays at flowering/fruit set, sulphur for mildew; hot water dip post-harvest if possible.
+                            Profit idea: Clean panicles and healthy fruits reduce post-harvest losses and raise income.'''),
+        'ideal_conditions': _l('N: 20-40, P: 20-40, K: 30-50, Temperature: 24-30°C, Humidity: 50-80%, pH: 5.5-7.5, Rainfall: 70-150mm')
     },
     'banana': {
-        'description': '''Best time: Year-round in many areas with irrigation.
-                        Soil and water: Fertile, well-drained soil; steady moisture is important.
-                        Nutrients: High feeder; follow fertigation schedule; add organic matter.
-                        Major diseases/pests: Fusarium wilt, Sigatoka leaf spots, bunchy top virus.
-                        Simple solutions: Use disease-free tissue culture plants, sanitize tools, good drainage, scheduled leaf-spot sprays, remove infected mats.
-                        Profit idea: Uniform bunch size and clean peels get better rate; careful harvest and packing improve returns.''',
-        'ideal_conditions': 'N: 80-120, P: 20-40, K: 50-70, Temperature: 20-30°C, Humidity: 70-90%, pH: 5.5-7.0, Rainfall: 120-180mm'
+        'description': _l('''Best time: Year-round in many areas with irrigation.
+                            Soil and water: Fertile, well-drained soil; steady moisture is important.
+                            Nutrients: High feeder; follow fertigation schedule; add organic matter.
+                            Major diseases/pests: Fusarium wilt, Sigatoka leaf spots, bunchy top virus.
+                            Simple solutions: Use disease-free tissue culture plants, sanitize tools, good drainage, scheduled leaf-spot sprays, remove infected mats.
+                            Profit idea: Uniform bunch size and clean peels get better rate; careful harvest and packing improve returns.'''),
+        'ideal_conditions': _l('N: 80-120, P: 20-40, K: 50-70, Temperature: 20-30°C, Humidity: 70-90%, pH: 5.5-7.0, Rainfall: 120-180mm')
     },
-  
     'chickpea': {
-        'description': '''Best time: Rabi (post-monsoon).
-                        Soil and water: Grows well in light to medium soils; avoid waterlogging.
-                        Nutrients: Starter fertilizer and sulphur help; inoculate seed with Rhizobium where needed.
-                        Major diseases: Fusarium wilt, Ascochyta blight.
-                        Simple solutions: Seed treatment, resistant varieties, crop rotation, timely fungicide if disease appears.
-                        Profit idea: MSP helps as price floor; timely sowing and wilt management protect yield and profit.''',
-        'ideal_conditions': 'N: 20-40, P: 40-60, K: 20-40, Temperature: 15-30°C, Humidity: 40-70%, pH: 6.0-8.0, Rainfall: 60-100mm'
+        'description': _l('''Best time: Rabi (post-monsoon).
+                            Soil and water: Grows well in light to medium soils; avoid waterlogging.
+                            Nutrients: Starter fertilizer and sulphur help; inoculate seed with Rhizobium where needed.
+                            Major diseases: Fusarium wilt, Ascochyta blight.
+                            Simple solutions: Seed treatment, resistant varieties, crop rotation, timely fungicide if disease appears.
+                            Profit idea: MSP helps as price floor; timely sowing and wilt management protect yield and profit.'''),
+        'ideal_conditions': _l('N: 20-40, P: 40-60, K: 20-40, Temperature: 15-30°C, Humidity: 40-70%, pH: 6.0-8.0, Rainfall: 60-100mm')
     },
     'coffee': {
-        'description': '''Best time: Grown in hilly, shaded, humid areas.
-                        Soil and water: Well-drained, rich soil; regulate shade.
-                        Nutrients: Regular manure + NPK; prune for light.
-                        Major diseases/pests: Leaf rust, berry diseases, coffee berry borer.
-                        Simple solutions: Sanitation, pruning, copper/systemic sprays at the right times, trap/monitor borers.
-                        Profit idea: Good picking and clean processing increase grade and price.''',
-        'ideal_conditions': 'N: 80-120, P: 20-40, K: 20-40, Temperature: 15-28°C, Humidity: 50-70%, pH: 6.0-7.0, Rainfall: 150-200mm'
+        'description': _l('''Best time: Grown in hilly, shaded, humid areas.
+                            Soil and water: Well-drained, rich soil; regulate shade.
+                            Nutrients: Regular manure + NPK; prune for light.
+                            Major diseases/pests: Leaf rust, berry diseases, coffee berry borer.
+                            Simple solutions: Sanitation, pruning, copper/systemic sprays at the right times, trap/monitor borers.
+                            Profit idea: Good picking and clean processing increase grade and price.'''),
+        'ideal_conditions': _l('N: 80-120, P: 20-40, K: 20-40, Temperature: 15-28°C, Humidity: 50-70%, pH: 6.0-7.0, Rainfall: 150-200mm')
     }
 }
 
@@ -143,13 +161,13 @@ def predict():
             crop_name, confidence = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
             predicted_crop = crop_name.lower()
 
-            # 3) Get crop information already stored in app.py
-            crop_description = CROP_INFO.get(predicted_crop, {}).get('description', 'No description available.')
-            ideal_conditions = CROP_INFO.get(predicted_crop, {}).get('ideal_conditions', 'Information not available.')
-            
+            # 3) Get crop information
+            crop_description = CROP_INFO.get(predicted_crop, {}).get('description', _l('No description available.'))
+            ideal_conditions = CROP_INFO.get(predicted_crop, {}).get('ideal_conditions', _l('Information not available.'))
+
             from utils.roi import compute_roi, is_msp_crop
-            
-            # 4) Optional ROI inputs from the same form (leave blank to use defaults in roi.compute_roi)
+
+            # 4) Optional ROI inputs
             price_per_quintal = request.form.get("price_per_quintal", type=float)
             price_per_kg = request.form.get("price_per_kg", type=float)
             yield_q_per_acre = request.form.get("yield_q_per_acre", type=float)
@@ -195,7 +213,6 @@ def predict():
     # Fallback GET
     return render_template('index.html')
 
-
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -208,10 +225,7 @@ def data_insights():
 @app.route('/api/predict', methods=['POST'])
 def api_predict():
     try:
-        # Get JSON data
         data = request.get_json()
-        
-        # Extract values
         N = float(data.get('nitrogen'))
         P = float(data.get('phosphorus'))
         K = float(data.get('potassium'))
@@ -219,22 +233,25 @@ def api_predict():
         humidity = float(data.get('humidity'))
         ph = float(data.get('ph'))
         rainfall = float(data.get('rainfall'))
-        
-        # Make prediction
+
         crop_name, confidence = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
-        
-        # Prepare response
+        crop_key = crop_name.lower()  # ensure consistent lookup for CROP_INFO
+
         response = {
             'status': 'success',
             'prediction': {
                 'crop': crop_name.title(),
                 'confidence': round(confidence, 2)
             },
-            'crop_info': CROP_INFO.get(crop_name, {})
+            # CROP_INFO values are lazy and will render in the current locale when converted to string
+            'crop_info': {
+                'description': str(CROP_INFO.get(crop_key, {}).get('description', _l('No description available.'))),
+                'ideal_conditions': str(CROP_INFO.get(crop_key, {}).get('ideal_conditions', _l('Information not available.')))
+            }
         }
-        
+
         return jsonify(response)
-    
+
     except Exception as e:
         return jsonify({
             'status': 'error',
@@ -246,5 +263,5 @@ if __name__ == '__main__':
     if not os.path.exists('crop_recommendation_model.pkl'):
         print("Model not found. Training new model...")
         train_crop_recommendation_model()
-    
-    app.run(debug=True) 
+
+    app.run(debug=True)

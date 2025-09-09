@@ -1,237 +1,246 @@
 {% extends 'base.html' %}
 
-{% block title %}KRUSHIMITRA - Crop Recommendation Result{% endblock %}
+{% block title %}{{ _('KRUSHIMITRA - Crop Recommendation Result') }}{% endblock %}
 
 {% block extra_css %}
 <style>
-    .crop-image {
-        border: 5px solid #fff;
-        max-height: 300px;
-        object-fit: cover;
-    }
+  .crop-image {
+    border: 5px solid #fff;
+    max-height: 300px;
+    object-fit: cover;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="row mb-4">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Prediction Result</li>
-                </ol>
-            </nav>
+  <div class="row mb-4">
+    <div class="col-12">
+      <nav aria-label="{{ _('breadcrumb') }}">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">{{ _('Home') }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ _('Prediction Result') }}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h2 class="mb-0"><i class="fas fa-check-circle me-2"></i>{{ _('Crop Recommendation') }}</h2>
         </div>
+        <div class="card-body">
+          <div class="crop-result-header">
+            <h1 class="display-4">{{ result.crop }}</h1>
+            <p class="lead">{{ _('is the best crop for your conditions') }}</p>
+            <div class="mt-3">
+              <span class="badge bg-light text-success px-3 py-2">
+                {% trans conf=result.confidence %}{{ conf }}% Confidence{% endtrans %}
+              </span>
+            </div>
+          </div>
+
+          <div class="text-center mb-4">
+            <img
+              src="/static/img/crops/{{ result.crop | lower }}.jpg"
+              alt="{% trans crop=result.crop %}Image of {{ crop }}{% endtrans %}"
+              onerror="this.onerror=null; this.src='/static/img/crops/default.jpg';"
+              class="img-fluid crop-image">
+          </div>
+
+          <h4 class="mt-4 text-success">
+            <i class="fas fa-info-circle me-2"></i>
+            {% trans crop=result.crop %}About {{ crop }}{% endtrans %}
+          </h4>
+          <p>{{ result.description }}</p>
+
+          <div class="card bg-light mt-4">
+            <div class="card-body">
+              <h5 class="card-title text-success"><i class="fas fa-seedling me-2"></i>{{ _('Ideal Growing Conditions') }}</h5>
+              <p>{{ result.ideal_conditions }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-between">
+            <a href="/" class="btn btn-outline-success"><i class="fas fa-arrow-left me-2"></i>{{ _('Try Another Prediction') }}</a>
+            <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print me-2"></i>{{ _('Print Results') }}</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-7">
-            <div class="card mb-4">
-                <div class="card-header bg-success text-white">
-                    <h2 class="mb-0"><i class="fas fa-check-circle me-2"></i>Crop Recommendation</h2>
-                </div>
-                <div class="card-body">
-                    <div class="crop-result-header">
-                        <h1 class="display-4">{{ result.crop }}</h1>
-                        <p class="lead">is the best crop for your conditions</p>
-                        <div class="mt-3">
-                            <span class="badge bg-light text-success px-3 py-2">{{ result.confidence }}% Confidence</span>
-                        </div>
-                    </div>
-
-                    <div class="text-center mb-4">
-                        <img src="/static/img/crops/{{ result.crop | lower }}.jpg" 
-                             alt="Image of {{ result.crop }}" 
-                             onerror="this.onerror=null; this.src='/static/img/crops/default.jpg';" 
-                             class="img-fluid crop-image">
-                    </div>
-
-                    <h4 class="mt-4 text-success"><i class="fas fa-info-circle me-2"></i>About {{ result.crop }}</h4>
-                    <p>{{ result.description }}</p>
-
-                    <div class="card bg-light mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title text-success"><i class="fas fa-seedling me-2"></i>Ideal Growing Conditions</h5>
-                            <p>{{ result.ideal_conditions }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="d-flex justify-content-between">
-                        <a href="/" class="btn btn-outline-success"><i class="fas fa-arrow-left me-2"></i>Try Another Prediction</a>
-                        <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print me-2"></i>Print Results</button>
-                    </div>
-                </div>
-            </div>
+    <div class="col-lg-5">
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0"><i class="fas fa-sliders-h me-2"></i>{{ _('Your Input Parameters') }}</h3>
         </div>
-
-        <div class="col-lg-5">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Your Input Parameters</h3>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card parameter-card bg-light h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-flask text-success mb-2" style="font-size: 1.8rem;"></i>
+                  <h5 class="card-title">{{ _('Nitrogen') }}</h5>
+                  <h4 class="mb-0">{{ input_data.nitrogen }} {{ _('kg/ha') }}</h4>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="card parameter-card bg-light h-100">
-                                <div class="card-body text-center p-3">
-                                    <i class="fas fa-flask text-success mb-2" style="font-size: 1.8rem;"></i>
-                                    <h5 class="card-title">Nitrogen</h5>
-                                    <h4 class="mb-0">{{ input_data.nitrogen }} kg/ha</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card parameter-card bg-light h-100">
-                                <div class="card-body text-center p-3">
-                                    <i class="fas fa-atom text-success mb-2" style="font-size: 1.8rem;"></i>
-                                    <h5 class="card-title">Phosphorus</h5>
-                                    <h4 class="mb-0">{{ input_data.phosphorus }} kg/ha</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card parameter-card bg-light h-100">
-                                <div class="card-body text-center p-3">
-                                    <i class="fas fa-leaf text-success mb-2" style="font-size: 1.8rem;"></i>
-                                    <h5 class="card-title">Potassium</h5>
-                                    <h4 class="mb-0">{{ input_data.potassium }} kg/ha</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card parameter-card bg-light h-100">
-                                <div class="card-body text-center p-3">
-                                    <i class="fas fa-temperature-high text-danger mb-2" style="font-size: 1.8rem;"></i>
-                                    <h5 class="card-title">Temperature</h5>
-                                    <h4 class="mb-0">{{ input_data.temperature }}°C</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card parameter-card bg-light h-100">
-                                <div class="card-body text-center p-3">
-                                    <i class="fas fa-tint text-info mb-2" style="font-size: 1.8rem;"></i>
-                                    <h5 class="card-title">Humidity</h5>
-                                    <h4 class="mb-0">{{ input_data.humidity }}%</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card parameter-card bg-light h-100">
-                                <div class="card-body text-center p-3">
-                                    <i class="fas fa-vial text-warning mb-2" style="font-size: 1.8rem;"></i>
-                                    <h5 class="card-title">pH</h5>
-                                    <h4 class="mb-0">{{ input_data.ph }}</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="card parameter-card bg-light h-100">
-                                <div class="card-body text-center p-3">
-                                    <i class="fas fa-cloud-rain text-primary mb-2" style="font-size: 1.8rem;"></i>
-                                    <h5 class="card-title">Rainfall</h5>
-                                    <h4 class="mb-0">{{ input_data.rainfall }} mm</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-            <!-- ROI Card: paste below the Input Parameters card, before Farming Tips -->
-<div class="card mb-4">
-  <div class="card-header bg-warning text-dark">
-    <h3 class="mb-0"><i class="fas fa-rupee-sign me-2"></i>Profit (Per Acre)</h3>
-  </div>
-  <div class="card-body">
-    <p class="mb-2">Gross: ₹ {{ roi.gross }} | Net (after cost): ₹ {{ roi.net }}</p>
 
-    <!-- Recalculate ROI: posts back to /predict using the same route -->
-    <form method="post" action="/predict">
-      <!-- keep the original prediction inputs so the crop stays the same -->
-      <input type="hidden" name="nitrogen" value="{{ input_data.nitrogen }}">
-      <input type="hidden" name="phosphorus" value="{{ input_data.phosphorus }}">
-      <input type="hidden" name="potassium" value="{{ input_data.potassium }}">
-      <input type="hidden" name="temperature" value="{{ input_data.temperature }}">
-      <input type="hidden" name="humidity" value="{{ input_data.humidity }}">
-      <input type="hidden" name="ph" value="{{ input_data.ph }}">
-      <input type="hidden" name="rainfall" value="{{ input_data.rainfall }}">
+            <div class="col-md-6">
+              <div class="card parameter-card bg-light h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-atom text-success mb-2" style="font-size: 1.8rem;"></i>
+                  <h5 class="card-title">{{ _('Phosphorus') }}</h5>
+                  <h4 class="mb-0">{{ input_data.phosphorus }} {{ _('kg/ha') }}</h4>
+                </div>
+              </div>
+            </div>
 
-      <div class="row g-2">
-        {% if is_msp %}
-          <div class="col-6">
-            <label class="form-label small">Price (₹/q)</label>
-            <input type="number" class="form-control" name="price_per_quintal" step="0.01" placeholder="MSP/mandi">
+            <div class="col-md-6">
+              <div class="card parameter-card bg-light h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-leaf text-success mb-2" style="font-size: 1.8rem;"></i>
+                  <h5 class="card-title">{{ _('Potassium') }}</h5>
+                  <h4 class="mb-0">{{ input_data.potassium }} {{ _('kg/ha') }}</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card parameter-card bg-light h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-temperature-high text-danger mb-2" style="font-size: 1.8rem;"></i>
+                  <h5 class="card-title">{{ _('Temperature') }}</h5>
+                  <h4 class="mb-0">{{ input_data.temperature }} {{ _('°C') }}</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card parameter-card bg-light h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-tint text-info mb-2" style="font-size: 1.8rem;"></i>
+                  <h5 class="card-title">{{ _('Humidity') }}</h5>
+                  <h4 class="mb-0">{{ input_data.humidity }} {{ _('%') }}</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card parameter-card bg-light h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-vial text-warning mb-2" style="font-size: 1.8rem;"></i>
+                  <h5 class="card-title">{{ _('pH') }}</h5>
+                  <h4 class="mb-0">{{ input_data.ph }}</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="card parameter-card bg-light h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-cloud-rain text-primary mb-2" style="font-size: 1.8rem;"></i>
+                  <h5 class="card-title">{{ _('Rainfall') }}</h5>
+                  <h4 class="mb-0">{{ input_data.rainfall }} {{ _('mm') }}</h4>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-6">
-            <label class="form-label small">Yield (q/acre)</label>
-            <input type="number" class="form-control" name="yield_q_per_acre" step="0.1" placeholder="e.g. 12">
-          </div>
-        {% else %}
-          <div class="col-6">
-            <label class="form-label small">Price (₹/kg)</label>
-            <input type="number" class="form-control" name="price_per_kg" step="0.01" placeholder="mandi rate">
-          </div>
-          <div class="col-6">
-            <label class="form-label small">Yield (kg/acre)</label>
-            <input type="number" class="form-control" name="yield_kg_per_acre" step="1" placeholder="e.g. 8000">
-          </div>
-        {% endif %}
-        <div class="col-12">
-          <label class="form-label small">Total Cost (₹/acre)</label>
-          <input type="number" class="form-control" name="total_cost_per_acre" step="100" placeholder="all costs included">
         </div>
       </div>
 
-      <div class="d-grid mt-3">
-        <button type="submit" class="btn btn-warning">Recalculate ROI</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-            <div class="card mb-4">
-                <div class="card-header bg-secondary text-white">
-                    <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Farming Tips</h3>
-                </div>
-                <div class="card-body">
-                    <div id="cropFacts" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <h5 class="text-success">Soil Health Matters</h5>
-                                <p>Maintaining proper soil health can increase crop yields by up to 30%, reducing the need for fertilizers.</p>
-                            </div>
-                            <div class="carousel-item">
-                                <h5 class="text-success">Crop Rotation Benefits</h5>
-                                <p>Rotating crops can reduce pest problems, improve soil fertility, and increase overall farm productivity.</p>
-                            </div>
-                            <div class="carousel-item">
-                                <h5 class="text-success">Water Conservation</h5>
-                                <p>Drip irrigation can save up to 60% more water compared to traditional flooding methods.</p>
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#cropFacts" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#cropFacts" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-footer text-center bg-light">
-                    <p class="mb-0 text-success">"जय जवान जय किसान"</p>
-                </div>
-            </div>
+      <!-- ROI Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+          <h3 class="mb-0"><i class="fas fa-rupee-sign me-2"></i>{{ _('Profit (Per Acre)') }}</h3>
         </div>
+        <div class="card-body">
+          <p class="mb-2">
+            {% trans gross=roi.gross net=roi.net %}Gross: ₹ {{ gross }} | Net (after cost): ₹ {{ net }}{% endtrans %}
+          </p>
+
+          <!-- Recalculate ROI -->
+          <form method="post" action="/predict">
+            <!-- keep the original prediction inputs so the crop stays the same -->
+            <input type="hidden" name="nitrogen" value="{{ input_data.nitrogen }}">
+            <input type="hidden" name="phosphorus" value="{{ input_data.phosphorus }}">
+            <input type="hidden" name="potassium" value="{{ input_data.potassium }}">
+            <input type="hidden" name="temperature" value="{{ input_data.temperature }}">
+            <input type="hidden" name="humidity" value="{{ input_data.humidity }}">
+            <input type="hidden" name="ph" value="{{ input_data.ph }}">
+            <input type="hidden" name="rainfall" value="{{ input_data.rainfall }}">
+
+            <div class="row g-2">
+              {% if is_msp %}
+                <div class="col-6">
+                  <label class="form-label small">{{ _('Price (₹/q)') }}</label>
+                  <input type="number" class="form-control" name="price_per_quintal" step="0.01" placeholder="{{ _('MSP/mandi') }}">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small">{{ _('Yield (q/acre)') }}</label>
+                  <input type="number" class="form-control" name="yield_q_per_acre" step="0.1" placeholder="{{ _('e.g. 12') }}">
+                </div>
+              {% else %}
+                <div class="col-6">
+                  <label class="form-label small">{{ _('Price (₹/kg)') }}</label>
+                  <input type="number" class="form-control" name="price_per_kg" step="0.01" placeholder="{{ _('mandi rate') }}">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small">{{ _('Yield (kg/acre)') }}</label>
+                  <input type="number" class="form-control" name="yield_kg_per_acre" step="1" placeholder="{{ _('e.g. 8000') }}">
+                </div>
+              {% endif %}
+              <div class="col-12">
+                <label class="form-label small">{{ _('Total Cost (₹/acre)') }}</label>
+                <input type="number" class="form-control" name="total_cost_per_acre" step="100" placeholder="{{ _('all costs included') }}">
+              </div>
+            </div>
+
+            <div class="d-grid mt-3">
+              <button type="submit" class="btn btn-warning">{{ _('Recalculate ROI') }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>{{ _('Farming Tips') }}</h3>
+        </div>
+        <div class="card-body">
+          <div id="cropFacts" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <h5 class="text-success">{{ _('Soil Health Matters') }}</h5>
+                <p>{{ _('Maintaining proper soil health can increase crop yields by up to 30%, reducing the need for fertilizers.') }}</p>
+              </div>
+              <div class="carousel-item">
+                <h5 class="text-success">{{ _('Crop Rotation Benefits') }}</h5>
+                <p>{{ _('Rotating crops can reduce pest problems, improve soil fertility, and increase overall farm productivity.') }}</p>
+              </div>
+              <div class="carousel-item">
+                <h5 class="text-success">{{ _('Water Conservation') }}</h5>
+                <p>{{ _('Drip irrigation can save up to 60% more water compared to traditional flooding methods.') }}</p>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#cropFacts" data-bs-slide="prev" aria-label="{{ _('Previous') }}">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">{{ _('Previous') }}</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#cropFacts" data-bs-slide="next" aria-label="{{ _('Next') }}">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">{{ _('Next') }}</span>
+            </button>
+          </div>
+        </div>
+        <div class="card-footer text-center bg-light">
+          <p class="mb-0 text-success">"{{ _('जय जवान जय किसान') }}"</p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Data Insights - Crop Recommendation System{% endblock %}
+{% block title %}{{ _('Data Insights - Crop Recommendation System') }}{% endblock %}
 
 {% block content %}
 <div class="container">
   <div class="row mb-4">
     <div class="col-12">
-      <nav aria-label="breadcrumb">
+      <nav aria-label="{{ _('breadcrumb') }}">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Data Insights</li>
+          <li class="breadcrumb-item"><a href="/">{{ _('Home') }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ _('Data Insights') }}</li>
         </ol>
       </nav>
     </div>
@@ -19,12 +19,14 @@
     <div class="col-12">
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h2 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Data Insights and Visualization</h2>
+          <h2 class="mb-0"><i class="fas fa-chart-bar me-2"></i>{{ _('Data Insights and Visualization') }}</h2>
         </div>
         <div class="card-body">
           <p class="lead">
+            {% trans %}
             Our model is trained on a dataset with 2200 samples across 22 different crops.
             Here are some key insights from the exploratory data analysis.
+            {% endtrans %}
           </p>
         </div>
       </div>
@@ -36,13 +38,15 @@
     <div class="col-lg-6">
       <div class="card mb-4">
         <div class="card-header bg-info text-white">
-          <h3 class="mb-0"><i class="fas fa-seedling me-2"></i>Crop Distribution</h3>
+          <h3 class="mb-0"><i class="fas fa-seedling me-2"></i>{{ _('Crop Distribution') }}</h3>
         </div>
         <div class="card-body">
-          <p>The dataset contains an equal distribution of 22 different crops with 100 samples for each crop type.</p>
-          <img src="{{ url_for('static', filename='img/visualizations/crop_distribution.png') }}"
-               alt="Crop Distribution" class="img-fluid rounded shadow"
-               onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
+          <p>{% trans %}The dataset contains an equal distribution of 22 different crops with 100 samples for each crop type.{% endtrans %}</p>
+          <img
+            src="{{ url_for('static', filename='img/visualizations/crop_distribution.png') }}"
+            alt="{{ _('Crop Distribution') }}"
+            class="img-fluid rounded shadow"
+            onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
         </div>
       </div>
     </div>
@@ -50,13 +54,15 @@
     <div class="col-lg-6">
       <div class="card mb-4">
         <div class="card-header bg-success text-white">
-          <h3 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Feature Importance</h3>
+          <h3 class="mb-0"><i class="fas fa-chart-pie me-2"></i>{{ _('Feature Importance') }}</h3>
         </div>
         <div class="card-body">
-          <p>The relative importance of each feature in the Random Forest model prediction.</p>
-          <img src="{{ url_for('static', filename='img/visualizations/feature_importance.png') }}"
-               alt="Feature Importance" class="img-fluid rounded shadow"
-               onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
+          <p>{{ _('The relative importance of each feature in the Random Forest model prediction.') }}</p>
+          <img
+            src="{{ url_for('static', filename='img/visualizations/feature_importance.png') }}"
+            alt="{{ _('Feature Importance') }}"
+            class="img-fluid rounded shadow"
+            onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
         </div>
       </div>
     </div>
@@ -67,7 +73,7 @@
     <div class="col-12">
       <div class="card mb-4">
         <div class="card-header bg-warning text-dark">
-          <h3 class="mb-0"><i class="fas fa-table me-2"></i>Parameter Distribution by Crop</h3>
+          <h3 class="mb-0"><i class="fas fa-table me-2"></i>{{ _('Parameter Distribution by Crop') }}</h3>
         </div>
         <div class="card-body">
           <div class="row">
@@ -75,10 +81,14 @@
             <div class="col-md-6">
               <div class="card mb-3">
                 <div class="card-body">
-                  <h5 class="card-title">{{ param|capitalize }} Content by Crop</h5>
-                  <img src="{{ url_for('static', filename='img/visualizations/' ~ param ~ '_by_crop.png') }}"
-                       alt="{{ param|capitalize }} by Crop" class="img-fluid rounded shadow"
-                       onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
+                  <h5 class="card-title">
+                    {% trans p=param|capitalize %}{{ p }} Content by Crop{% endtrans %}
+                  </h5>
+                  <img
+                    src="{{ url_for('static', filename='img/visualizations/' ~ param ~ '_by_crop.png') }}"
+                    alt="{% trans p=param|capitalize %}{{ p }} by Crop{% endtrans %}"
+                    class="img-fluid rounded shadow"
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
                 </div>
               </div>
             </div>
@@ -90,10 +100,14 @@
             <div class="col-md-6">
               <div class="card mb-3">
                 <div class="card-body">
-                  <h5 class="card-title">{{ param|capitalize }} Requirements</h5>
-                  <img src="{{ url_for('static', filename='img/visualizations/' ~ param ~ '_by_crop.png') }}"
-                       alt="{{ param|capitalize }} by Crop" class="img-fluid rounded shadow"
-                       onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
+                  <h5 class="card-title">
+                    {% trans p=param|capitalize %}{{ p }} Requirements{% endtrans %}
+                  </h5>
+                  <img
+                    src="{{ url_for('static', filename='img/visualizations/' ~ param ~ '_by_crop.png') }}"
+                    alt="{% trans p=param|capitalize %}{{ p }} by Crop{% endtrans %}"
+                    class="img-fluid rounded shadow"
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
                 </div>
               </div>
             </div>
@@ -109,33 +123,33 @@
     <div class="col-lg-6">
       <div class="card mb-4">
         <div class="card-header bg-danger text-white">
-          <h3 class="mb-0"><i class="fas fa-calculator me-2"></i>Statistical Summary</h3>
+          <h3 class="mb-0"><i class="fas fa-calculator me-2"></i>{{ _('Statistical Summary') }}</h3>
         </div>
         <div class="card-body">
-          <h5>Descriptive Statistics of Features</h5>
+          <h5>{{ _('Descriptive Statistics of Features') }}</h5>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
-                  <th>Statistic</th>
-                  <th>N</th>
-                  <th>P</th>
-                  <th>K</th>
-                  <th>Temperature</th>
-                  <th>Humidity</th>
-                  <th>pH</th>
-                  <th>Rainfall</th>
+                  <th>{{ _('Statistic') }}</th>
+                  <th>{{ _('N') }}</th>
+                  <th>{{ _('P') }}</th>
+                  <th>{{ _('K') }}</th>
+                  <th>{{ _('Temperature') }}</th>
+                  <th>{{ _('Humidity') }}</th>
+                  <th>{{ _('pH') }}</th>
+                  <th>{{ _('Rainfall') }}</th>
                 </tr>
               </thead>
               <tbody>
                 {% set stats = [
-                  ('Mean', [50.55, 53.36, 48.15, 25.62, 71.48, 6.47, 103.46]),
-                  ('Std', [36.92, 32.99, 50.65, 5.06, 22.26, 0.77, 54.96]),
-                  ('Min', [0.0, 5.0, 5.0, 8.83, 14.26, 3.5, 20.21]),
+                  (_('Mean'), [50.55, 53.36, 48.15, 25.62, 71.48, 6.47, 103.46]),
+                  (_('Std'), [36.92, 32.99, 50.65, 5.06, 22.26, 0.77, 54.96]),
+                  (_('Min'), [0.0, 5.0, 5.0, 8.83, 14.26, 3.5, 20.21]),
                   ('25%', [21.0, 28.0, 20.0, 22.77, 60.26, 5.97, 64.55]),
                   ('50%', [37.0, 51.0, 32.0, 25.6, 80.47, 6.43, 94.87]),
                   ('75%', [84.25, 68.0, 49.0, 28.56, 89.95, 6.92, 124.27]),
-                  ('Max', [140.0, 145.0, 205.0, 43.68, 99.98, 9.94, 298.56])
+                  (_('Max'), [140.0, 145.0, 205.0, 43.68, 99.98, 9.94, 298.56])
                 ] %}
                 {% for label, values in stats %}
                 <tr>
@@ -156,31 +170,31 @@
     <div class="col-lg-6">
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h3 class="mb-0"><i class="fas fa-brain me-2"></i>Model Performance</h3>
+          <h3 class="mb-0"><i class="fas fa-brain me-2"></i>{{ _('Model Performance') }}</h3>
         </div>
         <div class="card-body">
-          <h5>Classification Metrics</h5>
+          <h5>{{ _('Classification Metrics') }}</h5>
           <div class="table-responsive">
             <table class="table table-bordered">
               <tbody>
-                <tr><th scope="row">Accuracy</th><td>99.55%</td></tr>
-                <tr><th scope="row">Cross-Validation Score</th><td>99.09% (mean of 5-fold CV)</td></tr>
-                <tr><th scope="row">Precision (Macro Avg)</th><td>99.57%</td></tr>
-                <tr><th scope="row">Recall (Macro Avg)</th><td>99.55%</td></tr>
-                <tr><th scope="row">F1-Score (Macro Avg)</th><td>99.55%</td></tr>
+                <tr><th scope="row">{{ _('Accuracy') }}</th><td>99.55%</td></tr>
+                <tr><th scope="row">{{ _('Cross-Validation Score') }}</th><td>{{ _('99.09% (mean of 5-fold CV)') }}</td></tr>
+                <tr><th scope="row">{{ _('Precision (Macro Avg)') }}</th><td>99.57%</td></tr>
+                <tr><th scope="row">{{ _('Recall (Macro Avg)') }}</th><td>99.55%</td></tr>
+                <tr><th scope="row">{{ _('F1-Score (Macro Avg)') }}</th><td>99.55%</td></tr>
               </tbody>
             </table>
           </div>
 
-          <h5 class="mt-4">Hyperparameters</h5>
+          <h5 class="mt-4">{{ _('Hyperparameters') }}</h5>
           <div class="table-responsive">
             <table class="table table-bordered">
               <tbody>
-                <tr><th scope="row">Algorithm</th><td>Random Forest Classifier</td></tr>
-                <tr><th scope="row">n_estimators</th><td>100</td></tr>
-                <tr><th scope="row">max_depth</th><td>20</td></tr>
-                <tr><th scope="row">min_samples_split</th><td>2</td></tr>
-                <tr><th scope="row">min_samples_leaf</th><td>1</td></tr>
+                <tr><th scope="row">{{ _('Algorithm') }}</th><td>{{ _('Random Forest Classifier') }}</td></tr>
+                <tr><th scope="row">{{ _('n_estimators') }}</th><td>100</td></tr>
+                <tr><th scope="row">{{ _('max_depth') }}</th><td>20</td></tr>
+                <tr><th scope="row">{{ _('min_samples_split') }}</th><td>2</td></tr>
+                <tr><th scope="row">{{ _('min_samples_leaf') }}</th><td>1</td></tr>
               </tbody>
             </table>
           </div>
@@ -194,14 +208,16 @@
     <div class="col-12">
       <div class="card mb-4">
         <div class="card-header bg-success text-white">
-          <h3 class="mb-0"><i class="fas fa-puzzle-piece me-2"></i>Feature Correlations</h3>
+          <h3 class="mb-0"><i class="fas fa-puzzle-piece me-2"></i>{{ _('Feature Correlations') }}</h3>
         </div>
         <div class="card-body text-center">
-          <p>Correlation matrix showing the relationships between different soil and climate parameters.</p>
-          <img src="{{ url_for('static', filename='img/visualizations/correlation_matrix.png') }}"
-               alt="Feature Correlation Matrix" class="img-fluid rounded shadow"
-               style="max-width: 800px;"
-               onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
+          <p>{{ _('Correlation matrix showing the relationships between different soil and climate parameters.') }}</p>
+          <img
+            src="{{ url_for('static', filename='img/visualizations/correlation_matrix.png') }}"
+            alt="{{ _('Feature Correlation Matrix') }}"
+            class="img-fluid rounded shadow"
+            style="max-width: 800px;"
+            onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/visualizations/placeholder.png') }}';">
         </div>
       </div>
     </div>
