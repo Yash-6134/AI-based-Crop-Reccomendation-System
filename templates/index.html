@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}KRUSHIMITRA - Smart Farming Advisor{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Add smooth transitions to prevent blinking */
+    .btn {
+        transition: all 0.3s ease-in-out !important;
+    }
+    
+    .btn:hover, .btn:focus, .btn:active {
+        transition: all 0.3s ease-in-out !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Project Banner -->
+<div class="project-banner">
+    <h1>KRUSHIMITRA</h1>
+    <p class="tagline">जय जवान जय किसान</p>
+    <p class="lead mb-4">An AI-powered crop recommendation system to empower Indian farmers</p>
+    <a href="#prediction-form" class="btn btn-success btn-lg">Get Started</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card hero-card mb-4">
+            <div class="card-body">
+                <h1 class="display-5 fw-bold text-success mb-3">Smart Crop Recommendation</h1>
+                <p class="lead">Our AI-powered system analyzes soil composition and environmental factors to recommend the optimal crop for your field.</p>
+                <p>Make data-driven farming decisions with our machine learning technology, trained on extensive agricultural datasets.</p>
+                <div class="mt-4">
+                    <a href="#prediction-form" class="btn btn-primary smooth-btn">Get Crop Recommendation</a>
+                    <a href="/data-insights" class="btn btn-outline-success ms-2 smooth-btn">View Data Insights</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="card-title"><i class="fas fa-seedling text-success me-2"></i>How It Works</h3>
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="text-center">
+                            <div class="param-icon">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <h5>Soil Analysis</h5>
+                            <p class="small">Enter your soil's NPK values and pH level</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="text-center">
+                            <div class="param-icon">
+                                <i class="fas fa-cloud-sun-rain"></i>
+                            </div>
+                            <h5>Climate Data</h5>
+                            <p class="small">Input temperature, humidity, and rainfall data</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="text-center">
+                            <div class="param-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h5>AI Analysis</h5>
+                            <p class="small">Our model processes your field's unique conditions</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="text-center">
+                            <div class="param-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h5>Crop Recommendation</h5>
+                            <p class="small">Get personalized crop suggestions with confidence score</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card" id="prediction-form">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0"><i class="fas fa-seedling me-2"></i>Crop Recommendation Form</h3>
+            </div>
+            <div class="card-body">
+                <form action="/predict" method="post" class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nitrogen" class="form-label">Nitrogen (N) Content</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="nitrogen" name="nitrogen" min="0" max="140" step="1" required>
+                                <span class="input-group-text">kg/ha</span>
+                            </div>
+                            <div class="form-text">Range: 0-140 kg/ha</div>
+                            <div class="invalid-feedback">Please enter a valid nitrogen value.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phosphorus" class="form-label">Phosphorus (P) Content</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="phosphorus" name="phosphorus" min="5" max="145" step="1" required>
+                                <span class="input-group-text">kg/ha</span>
+                            </div>
+                            <div class="form-text">Range: 5-145 kg/ha</div>
+                            <div class="invalid-feedback">Please enter a valid phosphorus value.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <label for="potassium" class="form-label">Potassium (K) Content</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="potassium" name="potassium" min="5" max="205" step="1" required>
+                                <span class="input-group-text">kg/ha</span>
+                            </div>
+                            <div class="form-text">Range: 5-205 kg/ha</div>
+                            <div class="invalid-feedback">Please enter a valid potassium value.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="temperature" class="form-label">Temperature</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="temperature" name="temperature" min="8.8" max="43.7" step="0.1" required>
+                                <span class="input-group-text">°C</span>
+                            </div>
+                            <div class="form-text">Range: 8.8-43.7 °C</div>
+                            <div class="invalid-feedback">Please enter a valid temperature value.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <label for="humidity" class="form-label">Relative Humidity</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="humidity" name="humidity" min="14.3" max="100" step="0.1" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <div class="form-text">Range: 14.3-100 %</div>
+                            <div class="invalid-feedback">Please enter a valid humidity value.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ph" class="form-label">pH Value</label>
+                            <input type="number" class="form-control" id="ph" name="ph" min="3.5" max="10" step="0.1" required>
+                            <div class="form-text">Range: 3.5-10 pH</div>
+                            <div class="invalid-feedback">Please enter a valid pH value.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 mt-3">
+                        <label for="rainfall" class="form-label">Rainfall</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="rainfall" name="rainfall" min="20.2" max="298.6" step="0.1" required>
+                            <span class="input-group-text">mm</span>
+                        </div>
+                        <div class="form-text">Range: 20.2-298.6 mm</div>
+                        <div class="invalid-feedback">Please enter a valid rainfall value.</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg smooth-btn">Get Crop Recommendation</button>
+                        <button type="reset" class="btn btn-outline-secondary smooth-btn">Reset Form</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0"><i class="fas fa-check-circle me-2"></i>Supported Crops</h5>
+            </div>
+            <div class="card-body">
+                <p>Our system can recommend these crops based on your inputs:</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="crop-badge">Rice</span>
+                        <span class="crop-badge">Maize</span>
+                        <span class="crop-badge">Cotton</span>
+                        <span class="crop-badge">Jute</span>
+                        <span class="crop-badge">Coconut</span>
+                        <span class="crop-badge">Papaya</span>
+                        <span class="crop-badge">Orange</span>
+                        <span class="crop-badge">Apple</span>
+                        <span class="crop-badge">Muskmelon</span>
+                        <span class="crop-badge">Watermelon</span>
+                        <span class="crop-badge">Grapes</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="crop-badge">Mango</span>
+                        <span class="crop-badge">Banana</span>
+                        <span class="crop-badge">Pomegranate</span>
+                        <span class="crop-badge">Lentil</span>
+                        <span class="crop-badge">Blackgram</span>
+                        <span class="crop-badge">Mungbean</span>
+                        <span class="crop-badge">Mothbeans</span>
+                        <span class="crop-badge">Pigeonpeas</span>
+                        <span class="crop-badge">Kidneybeans</span>
+                        <span class="crop-badge">Chickpea</span>
+                        <span class="crop-badge">Coffee</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation script
+    (function () {
+        'use strict'
+        
+        // Fetch all forms we want to apply validation to
+        var forms = document.querySelectorAll('.needs-validation')
+        
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        
+        // Prevent button blinking by adding smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    })()
+</script>
+{% endblock %} 
+
