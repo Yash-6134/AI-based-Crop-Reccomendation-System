@@ -10,7 +10,12 @@ app = Flask(__name__)
 # Crop descriptions for the UI
 CROP_INFO = {
     'rice': {
-        'description': 'Rice is a staple food crop in many countries. It grows best in warm, humid environments with plenty of rainfall.',
+        'description': '''Best time: Kharif (monsoon); needs warm weather and good water.
+                        Soil and water: Grows well in clay/loam soil; keep field level; avoid very deep water.
+                        Nutrients: Use balanced NPK; do not overuse urea.
+                        Major diseases: Blast, bacterial leaf blight, sheath blight.
+                        Simple solutions: Use resistant seed, treat seed, keep proper spacing, drain excess water; spray as per local agri advice if disease crosses threshold.
+                        Profit idea: Gross = yield per acre × price (MSP/local mandi). Control disease early to protect yield and profit.''',
         'ideal_conditions': 'N: 80-100, P: 40-60, K: 40-45, Temperature: 20-25°C, Humidity: 80-85%, pH: 6.0-7.0, Rainfall: 200-250mm'
     },
     'maize': {
@@ -18,7 +23,12 @@ CROP_INFO = {
         'ideal_conditions': 'N: 80-100, P: 50-80, K: 40-60, Temperature: 22-30°C, Humidity: 50-80%, pH: 5.5-7.0, Rainfall: 80-100mm'
     },
     'jute': {
-        'description': 'Jute is a fiber crop that thrives in hot, humid conditions. It requires consistent rainfall and well-drained soil.',
+        'description': '''Best time: Pre-monsoon to early monsoon.
+                        Soil and water: Moist, well-drained soil; avoid standing water.
+                        Nutrients: Basal NPK; keep weeds low.
+                        Major diseases: Stem/soft rot in waterlogged fields.
+                        Simple solutions: Good drainage, wider spacing where needed, seed treatment, field sanitation.
+                        Profit idea: Proper retting in clean water gives better fibre grade and price.''',
         'ideal_conditions': 'N: 50-80, P: 40-60, K: 40-50, Temperature: 25-35°C, Humidity: 70-90%, pH: 6.0-7.5, Rainfall: 150-200mm'
     },
     'cotton': {
