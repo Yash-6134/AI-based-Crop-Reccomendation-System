@@ -5,6 +5,7 @@ import joblib
 import os
 from model import predict_crop, train_crop_recommendation_model
 
+
 app = Flask(__name__)
 
 # Crop descriptions for the UI
@@ -19,7 +20,12 @@ CROP_INFO = {
         'ideal_conditions': 'N: 80-100, P: 40-60, K: 40-45, Temperature: 20-25°C, Humidity: 80-85%, pH: 6.0-7.0, Rainfall: 200-250mm'
     },
     'maize': {
-        'description': 'Maize (corn) is a versatile crop used for food, feed, and biofuel. It requires moderate water and nutrients.',
+        'description': '''Best time: Kharif and also Rabi in many areas.
+                        Soil and water: Needs well-drained soil; avoid waterlogging.
+                        Nutrients: Starter fertilizer at sowing; top-dress nitrogen at knee-height and tasseling.
+                        Major pest/disease: Fall armyworm, leaf blights.
+                        Simple solutions: Pheromone traps, destroy egg masses, neem-based sprays early; choose tolerant hybrids; rotate crops.
+                        Profit idea: Keep fields weed-free early; timely protection against fall armyworm saves cobs and boosts income.''',
         'ideal_conditions': 'N: 80-100, P: 50-80, K: 40-60, Temperature: 22-30°C, Humidity: 50-80%, pH: 5.5-7.0, Rainfall: 80-100mm'
     },
     'jute': {
@@ -32,41 +38,86 @@ CROP_INFO = {
         'ideal_conditions': 'N: 50-80, P: 40-60, K: 40-50, Temperature: 25-35°C, Humidity: 70-90%, pH: 6.0-7.5, Rainfall: 150-200mm'
     },
     'cotton': {
-        'description': 'Cotton is a major fiber crop that grows best in warm climates. It requires moderate water and fertile soil.',
+        'description': '''Best time: Kharif (rainfed/irrigated depending on region).
+                            Soil and water: Deep, well-drained soil; avoid excess nitrogen.
+                            Nutrients: Balanced NPK with micronutrients; split nitrogen.
+                            Major pests/diseases: Pink bollworm, whitefly, boll rot.
+                            Simple solutions: Pheromone traps, timely sowing, remove “rosette” flowers, avoid early pyrethroids, use need-based sprays; keep field clean.
+                            Profit idea: Protect bolls during peak fruiting; better lint and more pickings improve returns.''',
         'ideal_conditions': 'N: 80-120, P: 40-60, K: 40-60, Temperature: 20-30°C, Humidity: 50-80%, pH: 5.5-8.0, Rainfall: 80-120mm'
     },
     'orange': {
-        'description': 'Orange trees require subtropical to tropical conditions and moderate water. They are sensitive to extreme cold.',
+        'description': '''Best time: Orchard crop; plan planting in mild season.
+                        Soil and water: Well-drained soil; do not let water stand near trunk.
+                        Nutrients: Regular manure + NPK + micronutrients; maintain pH around slightly acidic to neutral.
+                        Major diseases: Citrus canker, greening (HLB), gummosis.
+                        Simple solutions: Use clean planting material, prune for airflow, copper sprays for canker, manage psyllid (HLB vector), protect trunk from injury and rot.
+                        Profit idea: Good canopy and timely sprays increase healthy fruits and market price.''',
         'ideal_conditions': 'N: 30-60, P: 30-50, K: 30-50, Temperature: 15-30°C, Humidity: 40-70%, pH: 5.5-7.0, Rainfall: 80-150mm'
     },
     'apple': {
-        'description': 'Apple trees require a period of cold dormancy and do best in temperate climates with distinct seasons.',
+        'description': '''Best time: Temperate zones only.
+                        Soil and water: Well-drained loam; avoid waterlogging.
+                        Nutrients: Balanced NPK; prune for light and air.
+                        Major diseases: Scab, powdery mildew, fire blight.
+                        Simple solutions: Orchard sanitation, pruning, protectant/systemic fungicides at key stages as per advisory.
+                        Profit idea: Higher “A-grade” fruit gives better price; disease control at right time improves packout.''',
         'ideal_conditions': 'N: 20-40, P: 20-40, K: 30-50, Temperature: 15-25°C, Humidity: 40-70%, pH: 5.5-6.5, Rainfall: 80-120mm'
     },
 
     'watermelon': {
-        'description': 'Watermelon thrives in warm weather with plenty of sunshine. It needs well-drained soil and consistent moisture.',
+        'description': '''Best time: Warm season; avoid heavy rains during fruiting.
+                        Soil and water: Sandy loam; raised beds and mulch help; drip irrigation is best.
+                        Nutrients: Balanced NPK with extra potassium for sweetness.
+                        Major diseases: Anthracnose, downy mildew, Fusarium wilt.
+                        Simple solutions: Rotate (do not plant after cucurbits), resistant varieties, field sanitation, protectant/systemic fungicides when needed.
+                        Profit idea: Time harvest for peak demand; clean, sweet fruits fetch better price.''',
         'ideal_conditions': 'N: 20-40, P: 30-50, K: 30-50, Temperature: 22-32°C, Humidity: 50-80%, pH: 6.0-7.0, Rainfall: 40-70mm'
     },
     'grapes': {
-        'description': 'Grape vines grow in various climates but prefer warm, dry conditions with good air circulation.',
+        'description': '''Best time: Perennial; pruning and training are key.
+                        Soil and water: Deep, well-drained loam; avoid high salts; maintain pH near neutral.
+                        Nutrients: Balanced feeding with micronutrients; regulate canopy.
+                        Major diseases: Powdery mildew, downy mildew, anthracnose, bunch rot.
+                        Simple solutions: Keep canopy open, remove infected parts, use sulphur/copper and systemic sprays as per schedule; maintain bunch hygiene.
+                        Profit idea: Better brix, berry size, and appearance give higher rates; disease-free bunches raise packout and profit.''',
         'ideal_conditions': 'N: 20-40, P: 20-40, K: 30-50, Temperature: 15-25°C, Humidity: 60-70%, pH: 6.0-7.0, Rainfall: 60-100mm'
     },
     'mango': {
-        'description': 'Mango trees thrive in tropical and subtropical climates. They require a dry period for flowering and fruiting.',
+        'description': '''Best time: Tropical/sub-tropical; plant in mild weather.
+                        Soil and water: Deep, well-drained soil; avoid waterlogging around trunk.
+                        Nutrients: Manure + NPK; zinc/boron if deficient; prune after harvest.
+                        Major diseases: Anthracnose, powdery mildew, malformation.
+                        Simple solutions: Prune for airflow, orchard sanitation, copper or mancozeb/carbendazim sprays at flowering/fruit set, sulphur for mildew; hot water dip post-harvest if possible.
+                        Profit idea: Clean panicles and healthy fruits reduce post-harvest losses and raise income.''',
         'ideal_conditions': 'N: 20-40, P: 20-40, K: 30-50, Temperature: 24-30°C, Humidity: 50-80%, pH: 5.5-7.5, Rainfall: 70-150mm'
     },
     'banana': {
-        'description': 'Banana plants require consistent warmth and moisture. They grow rapidly in humid tropical conditions.',
+        'description': '''Best time: Year-round in many areas with irrigation.
+                        Soil and water: Fertile, well-drained soil; steady moisture is important.
+                        Nutrients: High feeder; follow fertigation schedule; add organic matter.
+                        Major diseases/pests: Fusarium wilt, Sigatoka leaf spots, bunchy top virus.
+                        Simple solutions: Use disease-free tissue culture plants, sanitize tools, good drainage, scheduled leaf-spot sprays, remove infected mats.
+                        Profit idea: Uniform bunch size and clean peels get better rate; careful harvest and packing improve returns.''',
         'ideal_conditions': 'N: 80-120, P: 20-40, K: 50-70, Temperature: 20-30°C, Humidity: 70-90%, pH: 5.5-7.0, Rainfall: 120-180mm'
     },
   
     'chickpea': {
-        'description': 'Chickpea (garbanzo bean) is a cool-season pulse crop that requires moderate water and growing conditions.',
+        'description': '''Best time: Rabi (post-monsoon).
+                        Soil and water: Grows well in light to medium soils; avoid waterlogging.
+                        Nutrients: Starter fertilizer and sulphur help; inoculate seed with Rhizobium where needed.
+                        Major diseases: Fusarium wilt, Ascochyta blight.
+                        Simple solutions: Seed treatment, resistant varieties, crop rotation, timely fungicide if disease appears.
+                        Profit idea: MSP helps as price floor; timely sowing and wilt management protect yield and profit.''',
         'ideal_conditions': 'N: 20-40, P: 40-60, K: 20-40, Temperature: 15-30°C, Humidity: 40-70%, pH: 6.0-8.0, Rainfall: 60-100mm'
     },
     'coffee': {
-        'description': 'Coffee plants grow best in tropical highlands with moderate rainfall and shade. They prefer rich, well-drained soil.',
+        'description': '''Best time: Grown in hilly, shaded, humid areas.
+                        Soil and water: Well-drained, rich soil; regulate shade.
+                        Nutrients: Regular manure + NPK; prune for light.
+                        Major diseases/pests: Leaf rust, berry diseases, coffee berry borer.
+                        Simple solutions: Sanitation, pruning, copper/systemic sprays at the right times, trap/monitor borers.
+                        Profit idea: Good picking and clean processing increase grade and price.''',
         'ideal_conditions': 'N: 80-120, P: 20-40, K: 20-40, Temperature: 15-28°C, Humidity: 50-70%, pH: 6.0-7.0, Rainfall: 150-200mm'
     }
 }
@@ -79,7 +130,7 @@ def home():
 def predict():
     if request.method == 'POST':
         try:
-            # Extract values from form
+            # 1) Extract values from form
             N = float(request.form['nitrogen'])
             P = float(request.form['phosphorus'])
             K = float(request.form['potassium'])
@@ -87,36 +138,63 @@ def predict():
             humidity = float(request.form['humidity'])
             ph = float(request.form['ph'])
             rainfall = float(request.form['rainfall'])
-            
-            # Make prediction
+
+            # 2) Make prediction
             crop_name, confidence = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
+            predicted_crop = crop_name.lower()
+
+            # 3) Get crop information already stored in app.py
+            crop_description = CROP_INFO.get(predicted_crop, {}).get('description', 'No description available.')
+            ideal_conditions = CROP_INFO.get(predicted_crop, {}).get('ideal_conditions', 'Information not available.')
             
-            # Get crop information
-            crop_description = CROP_INFO.get(crop_name, {}).get('description', 'No description available.')
-            ideal_conditions = CROP_INFO.get(crop_name, {}).get('ideal_conditions', 'Information not available.')
+            from utils.roi import compute_roi, is_msp_crop
             
-            # Prepare response
+            # 4) Optional ROI inputs from the same form (leave blank to use defaults in roi.compute_roi)
+            price_per_quintal = request.form.get("price_per_quintal", type=float)
+            price_per_kg = request.form.get("price_per_kg", type=float)
+            yield_q_per_acre = request.form.get("yield_q_per_acre", type=float)
+            yield_kg_per_acre = request.form.get("yield_kg_per_acre", type=float)
+            total_cost_per_acre = request.form.get("total_cost_per_acre", type=float) or 0.0
+
+            roi = compute_roi(
+                predicted_crop,
+                price_per_quintal=price_per_quintal,
+                price_per_kg=price_per_kg,
+                yield_q_per_acre=yield_q_per_acre,
+                yield_kg_per_acre=yield_kg_per_acre,
+                total_cost_per_acre=total_cost_per_acre
+            )
+
+            # 5) Prepare response payload for template
             result = {
                 'crop': crop_name.title(),
                 'confidence': round(confidence, 2),
                 'description': crop_description,
                 'ideal_conditions': ideal_conditions
             }
-            
-            return render_template('result.html', result=result, input_data={
-                'nitrogen': N,
-                'phosphorus': P,
-                'potassium': K,
-                'temperature': temperature,
-                'humidity': humidity,
-                'ph': ph,
-                'rainfall': rainfall
-            })
-        
+
+            return render_template(
+                'result.html',
+                result=result,
+                input_data={
+                    'nitrogen': N,
+                    'phosphorus': P,
+                    'potassium': K,
+                    'temperature': temperature,
+                    'humidity': humidity,
+                    'ph': ph,
+                    'rainfall': rainfall
+                },
+                roi=roi,
+                is_msp=is_msp_crop(predicted_crop)
+            )
+
         except Exception as e:
             return render_template('error.html', error=str(e))
-    
+
+    # Fallback GET
     return render_template('index.html')
+
 
 @app.route('/about')
 def about():

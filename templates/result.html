@@ -145,6 +145,57 @@
                     </div>
                 </div>
             </div>
+            <!-- ROI Card: paste below the Input Parameters card, before Farming Tips -->
+<div class="card mb-4">
+  <div class="card-header bg-warning text-dark">
+    <h3 class="mb-0"><i class="fas fa-rupee-sign me-2"></i>Profit (Per Acre)</h3>
+  </div>
+  <div class="card-body">
+    <p class="mb-2">Gross: ₹ {{ roi.gross }} | Net (after cost): ₹ {{ roi.net }}</p>
+
+    <!-- Recalculate ROI: posts back to /predict using the same route -->
+    <form method="post" action="/predict">
+      <!-- keep the original prediction inputs so the crop stays the same -->
+      <input type="hidden" name="nitrogen" value="{{ input_data.nitrogen }}">
+      <input type="hidden" name="phosphorus" value="{{ input_data.phosphorus }}">
+      <input type="hidden" name="potassium" value="{{ input_data.potassium }}">
+      <input type="hidden" name="temperature" value="{{ input_data.temperature }}">
+      <input type="hidden" name="humidity" value="{{ input_data.humidity }}">
+      <input type="hidden" name="ph" value="{{ input_data.ph }}">
+      <input type="hidden" name="rainfall" value="{{ input_data.rainfall }}">
+
+      <div class="row g-2">
+        {% if is_msp %}
+          <div class="col-6">
+            <label class="form-label small">Price (₹/q)</label>
+            <input type="number" class="form-control" name="price_per_quintal" step="0.01" placeholder="MSP/mandi">
+          </div>
+          <div class="col-6">
+            <label class="form-label small">Yield (q/acre)</label>
+            <input type="number" class="form-control" name="yield_q_per_acre" step="0.1" placeholder="e.g. 12">
+          </div>
+        {% else %}
+          <div class="col-6">
+            <label class="form-label small">Price (₹/kg)</label>
+            <input type="number" class="form-control" name="price_per_kg" step="0.01" placeholder="mandi rate">
+          </div>
+          <div class="col-6">
+            <label class="form-label small">Yield (kg/acre)</label>
+            <input type="number" class="form-control" name="yield_kg_per_acre" step="1" placeholder="e.g. 8000">
+          </div>
+        {% endif %}
+        <div class="col-12">
+          <label class="form-label small">Total Cost (₹/acre)</label>
+          <input type="number" class="form-control" name="total_cost_per_acre" step="100" placeholder="all costs included">
+        </div>
+      </div>
+
+      <div class="d-grid mt-3">
+        <button type="submit" class="btn btn-warning">Recalculate ROI</button>
+      </div>
+    </form>
+  </div>
+</div>
 
             <div class="card mb-4">
                 <div class="card-header bg-secondary text-white">
