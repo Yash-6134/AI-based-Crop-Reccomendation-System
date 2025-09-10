@@ -1,0 +1,916 @@
+Hindi translations for KRUSHIMITRA.
+Copyright (C) 2025 KRUSHIMITRA
+This file is distributed under the same license as the KRUSHIMITRA project.
+FIRST AUTHOR EMAIL@ADDRESS, 2025.
+msgid ""
+msgstr ""
+"Project-Id-Version: KRUSHIMITRA\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-09-09 22:40+0530\n"
+"PO-Revision-Date: 2025-09-09 22:44+0530\n"
+"Last-Translator: FULL NAME EMAIL@ADDRESS\n"
+"Language: hi\n"
+"Language-Team: Hindi LL@li.org\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app.py:168 app.py:252
+msgid "No description available."
+msgstr "कोई विवरण उपलब्ध नहीं है।"
+
+#: app.py:169 app.py:253
+msgid "Information not available."
+msgstr "जानकारी उपलब्ध नहीं है।"
+
+#: model.py:19
+msgid "Loading dataset..."
+msgstr "डेटासेट लोड किया जा रहा है..."
+
+#: model.py:24
+#, python-format
+msgid "Found %(n)d missing values. Cleaning data..."
+msgstr "%(n)d रिक्त मान मिले। डेटा साफ किया जा रहा है..."
+
+#: model.py:43
+msgid "Splitting data into training and testing sets..."
+msgstr "डेटा को प्रशिक्षण और परीक्षण सेटों में विभाजित किया जा रहा है..."
+
+#: model.py:46
+msgid "Applying feature scaling..."
+msgstr "फ़ीचर स्केलिंग लागू की जा रही है..."
+
+#: model.py:55
+msgid "Training Random Forest model with cross-validation..."
+msgstr "क्रॉस-वैलिडेशन के साथ रैंडम फ़ॉरेस्ट मॉडल प्रशिक्षित किया जा रहा है..."
+
+#: model.py:58
+#, python-format
+msgid "Cross Validation Scores: %(scores)s"
+msgstr "क्रॉस-वैलिडेशन स्कोर: %(scores)s"
+
+#: model.py:59
+#, python-format
+msgid "Mean CV Score: %(score).4f"
+msgstr "औसत CV स्कोर: %(score).4f"
+
+#: model.py:61
+msgid "Performing hyperparameter tuning..."
+msgstr "हाइपरपैरामीटर ट्यूनिंग की जा रही है..."
+
+#: model.py:73
+#, python-format
+msgid "Best Parameters: %(params)s"
+msgstr "श्रेष्ठ पैरामीटर: %(params)s"
+
+#: model.py:74
+#, python-format
+msgid "Best CV Score: %(score).4f"
+msgstr "श्रेष्ठ CV स्कोर: %(score).4f"
+
+#: model.py:80
+#, python-format
+msgid "Test Accuracy: %(acc).4f"
+msgstr "परीक्षण सटीकता: %(acc).4f"
+
+#: model.py:81
+msgid ""
+"\n"
+"Classification Report:"
+msgstr ""
+"\n"
+"वर्गीकरण रिपोर्ट:"
+
+#: model.py:84
+msgid ""
+"\n"
+"Feature Importances:"
+msgstr ""
+"\n"
+"फ़ीचर महत्त्व:"
+
+#: model.py:90
+#, python-format
+msgid "%(name)s: %(imp).4f"
+msgstr "%(name)s: %(imp).4f"
+
+#: model.py:92
+msgid ""
+"\n"
+"Saving model and preprocessing objects..."
+msgstr ""
+"\n"
+"मॉडल और प्री-प्रोसेसिंग ऑब्जेक्ट सहेजे जा रहे हैं..."
+
+#: model.py:98
+msgid "Model training completed successfully!"
+msgstr "मॉडल प्रशिक्षण सफलतापूर्वक पूर्ण हुआ!"
+
+#: model.py:114
+msgid "Model artifacts not found. Training a new model..."
+msgstr "मॉडल आर्टिफैक्ट नहीं मिले। नया मॉडल प्रशिक्षित किया जा रहा है..."
+
+#: model.py:129
+msgid "Starting training via CLI..."
+msgstr "CLI के माध्यम से प्रशिक्षण प्रारंभ किया जा रहा है..."
+
+#: model.py:143
+msgid ""
+"\n"
+"Testing prediction with sample data:"
+msgstr ""
+"\n"
+"नमूना डेटा के साथ भविष्यवाणी का परीक्षण:"
+
+#: model.py:149
+#, python-format
+msgid ""
+"\n"
+"Test Case %(n)d:"
+msgstr ""
+"\n"
+"परीक्षण केस %(n)d:"
+
+#: model.py:150
+#, python-format
+msgid "Input: %(inp)s"
+msgstr "इनपुट: %(inp)s"
+
+#: model.py:151
+#, python-format
+msgid "Predicted Crop: %(crop)s"
+msgstr "अनुमानित फसल: %(crop)s"
+
+#: model.py:152
+#, python-format
+msgid "Confidence: %(p).2f%%"
+msgstr "विश्वसनीयता: %(p).2f%%"
+
+#: templates/about.html:3
+msgid "About - KRUSHIMITRA"
+msgstr "परिचय - KRUSHIMITRA"
+
+#: templates/about.html:9 templates/data_insights.html:9
+msgid "breadcrumb"
+msgstr "ब्रेडक्रंब"
+
+#: templates/about.html:11 templates/base.html:36 templates/base.html:72
+#: templates/data_insights.html:11
+msgid "Home"
+msgstr "मुखपृष्ठ"
+
+#: templates/about.html:12 templates/base.html:42 templates/base.html:74
+msgid "About"
+msgstr "परिचय"
+
+#: templates/about.html:19 templates/base.html:27 templates/base.html:59
+#: templates/index.html:21
+msgid "KRUSHIMITRA"
+msgstr "KRUSHIMITRA"
+
+#: templates/about.html:20 templates/about.html:248 templates/base.html:28
+#: templates/base.html:60 templates/index.html:22
+msgid "जय जवान जय किसान"
+msgstr "जय जवान जय किसान"
+
+#: templates/about.html:21
+msgid "An EDA Project by Yash Raut"
+msgstr "यश राऊत द्वारा एक EDA प्रोजेक्ट"
+
+#: templates/about.html:28
+msgid "About the Project"
+msgstr "परियोजना के बारे में"
+
+#: templates/about.html:31
+msgid "KRUSHIMITRA: Smart Crop Recommendation System"
+msgstr "KRUSHIMITRA: स्मार्ट फसल अनुशंसा प्रणाली"
+
+#: templates/about.html:34
+msgid ""
+"\n"
+" This project leverages machine learning to recommend optimal "
+"crops based on soil nutrient content and environmental conditions.\n"
+" "
+msgstr ""
+"\n"
+" यह परियोजना मशीन लर्निंग का उपयोग करके मिट्टी के पोषक तत्वों की मात्रा और "
+"पर्यावरणीय परिस्थितियों के आधार पर उपयुक्त फसलों की अनुशंसा करती है।\n"
+" "
+
+#: templates/about.html:40
+msgid ""
+"\n"
+" Agriculture plays a critical role in India's economic "
+"development and is the backbone of our agrarian economy.\n"
+" By using machine learning to recommend crops, we can increase"
+" agricultural productivity and sustainability.\n"
+" Our system analyzes soil composition (Nitrogen, Phosphorus, "
+"Potassium), weather conditions (temperature, humidity, rainfall),\n"
+" and soil pH to recommend the crop most likely to thrive in "
+"those conditions.\n"
+" "
+msgstr ""
+"\n"
+" कृषि भारत के आर्थिक विकास में महत्वपूर्ण भूमिका निभाती है और हमारी कृषि "
+"प्रधान अर्थव्यवस्था की रीढ़ है।\n"
+" मशीन लर्निंग से फसल की अनुशंसा करके, हम कृषि उत्पादकता और स्थिरता बढ़ा "
+"सकते हैं।\n"
+" हमारा सिस्टम मिट्टी की संरचना (नाइट्रोजन, फॉस्फोरस, पोटैशियम), मौसम की "
+"स्थितियाँ (तापमान, आर्द्रता, वर्षा)\n"
+" और मिट्टी का pH विश्लेषित करके उन परिस्थितियों में सबसे उपयुक्त फसल सुझाता है।\n"
+" "
+
+#: templates/about.html:48 templates/index.html:51
+msgid "How It Works"
+msgstr "यह कैसे काम करता है"
+
+#: templates/about.html:50
+msgid ""
+"\n"
+" Our system uses a Random Forest classification algorithm "
+"trained on a comprehensive dataset of crop growth conditions.\n"
+" This model identifies complex patterns in the data to provide"
+" accurate crop recommendations.\n"
+" "
+msgstr ""
+"\n"
+" हमारा सिस्टम फसल वृद्धि की परिस्थितियों के व्यापक डेटासेट पर प्रशिक्षित "
+"रैंडम फ़ॉरेस्ट वर्गीकरण एल्गोरिद्म का उपयोग करता है।\n"
+" यह मॉडल डेटा में जटिल पैटर्न पहचानकर सटीक फसल अनुशंसाएँ प्रदान करता है।\n"
+" "
+
+#: templates/about.html:58
+msgid "Technical Implementation"
+msgstr "तकनीकी कार्यान्वयन"
+
+#: templates/about.html:61
+msgid "Machine Learning Model:"
+msgstr "मशीन लर्निंग मॉडल:"
+
+#: templates/about.html:61
+msgid "Random Forest Classifier with hyperparameter tuning"
+msgstr "हाइपरपैरामीटर ट्यूनिंग सहित रैंडम फ़ॉरेस्ट क्लासिफ़ायर"
+
+#: templates/about.html:64
+msgid "Web Application:"
+msgstr "वेब एप्लिकेशन:"
+
+#: templates.about.html:64
+msgid "Flask framework with responsive Bootstrap UI"
+msgstr "Flask फ्रेमवर्क तथा उत्तरदायी Bootstrap UI"
+
+#: templates/about.html:67
+msgid "Data Preprocessing:"
+msgstr "डेटा पूर्व-प्रसंस्करण:"
+
+#: templates/about.html:67
+msgid "MinMaxScaler and StandardScaler for feature normalization"
+msgstr "फ़ीचर सामान्यीकरण हेतु MinMaxScaler और StandardScaler"
+
+#: templates/about.html:70
+msgid "Evaluation Metrics:"
+msgstr "मूल्यांकन मीट्रिक्स:"
+
+#: templates/about.html:70
+msgid "Classification accuracy, cross-validation, detailed classification reports"
+msgstr "वर्गीकरण सटीकता, क्रॉस-वैलिडेशन, विस्तृत वर्गीकरण रिपोर्ट"
+
+#: templates/about.html:76
+msgid "Benefits"
+msgstr "लाभ"
+
+#: templates/about.html:81
+msgid "Economic"
+msgstr "आर्थिक"
+
+#: templates/about.html:83
+msgid "Increased crop yields"
+msgstr "फसल उपज में वृद्धि"
+
+#: templates/about.html:84
+msgid "Optimized resource utilization"
+msgstr "संसाधनों का अनुकूल उपयोग"
+
+#: templates/about.html:85
+msgid "Reduced crop failure risks"
+msgstr "फसल विफलता का जोखिम कम"
+
+#: templates/about.html:86
+msgid "Better return on investment"
+msgstr "निवेश पर बेहतर प्रतिफल"
+
+#: templates/about.html:94
+msgid "Environmental"
+msgstr "पर्यावरणीय"
+
+#: templates/about.html:96
+msgid "Sustainable farming practices"
+msgstr "सतत कृषि पद्धतियाँ"
+
+#: templates/about.html:97
+msgid "Reduced fertilizer waste"
+msgstr "उर्वरक अपव्यय में कमी"
+
+#: templates/about.html:98
+msgid "Optimal land utilization"
+msgstr "भूमि का उत्तम उपयोग"
+
+#: templates/about.html:99
+msgid "Better water resource management"
+msgstr "जल संसाधन प्रबंधन में सुधार"
+
+#: templates/about.html:111
+msgid "Our Team"
+msgstr "हमारी टीम"
+
+#: templates/about.html:115
+msgid "KRUSHIMITRA is an Exploratory Data Analysis project developed by students of AISSMS IOIT, Pune"
+msgstr "KRUSHIMITRA, AISSMS IOIT, पुणे के छात्रों द्वारा विकसित एक एक्सप्लोरेटरी डेटा एनालिसिस (EDA) परियोजना है"
+
+#: templates/about.html:123
+msgid "Team Lead & ML Engineer"
+msgstr "टीम लीड और ML इंजीनियर"
+
+#: templates/about.html:125 templates/about.html:139 templates/about.html:153
+msgid "AISSMS IOIT"
+msgstr "AISSMS IOIT"
+
+#: templates/about.html:126 templates/about.html:140 templates/about.html:154
+msgid "Second Year"
+msgstr "द्वितीय वर्ष"
+
+#: templates/about.html:127 templates/about.html:141 templates/about.html:155
+msgid "Artificial Intelligence"
+msgstr "कृत्रिम बुद्धिमत्ता"
+
+#: templates/about.html:137
+msgid "Data Scientist & Backend Developer"
+msgstr "डेटा साइंटिस्ट और बैकएंड डेवलपर"
+
+#: templates/about.html:151
+msgid "UI/UX Designer & Frontend Developer"
+msgstr "UI/UX डिज़ाइनर और फ़्रंटएंड डेवलपर"
+
+#: templates/about.html:164
+msgid "Guided By Faculty"
+msgstr "प्राध्यापकों के मार्गदर्शन में"
+
+#: templates/about.html:165
+msgid "Department of Computer Engineering"
+msgstr "कंप्यूटर इंजीनियरिंग विभाग"
+
+#: templates/about.html:165
+msgid "AISSMS Institute of Information Technology, Pune"
+msgstr "AISSMS इंस्टीट्यूट ऑफ़ इन्फ़ॉर्मेशन टेक्नोलॉजी, पुणे"
+
+#: templates/about.html:175
+msgid "Data Sources"
+msgstr "डेटा स्रोत"
+
+#: templates/about.html:178
+msgid "The model is trained on the Crop Recommendation Dataset containing 2200 samples with the following attributes:"
+msgstr "मॉडल को 2200 नमूनों तथा निम्नलिखित विशेषताओं वाले क्रॉप रिकमेंडेशन डेटासेट पर प्रशिक्षित किया गया है:"
+
+#: templates/about.html:182
+msgid "Nitrogen (N)"
+msgstr "नाइट्रोजन (N)"
+
+#: templates/about.html:183 templates/about.html:187 templates/about.html:191
+#: templates/index.html:106 templates/index.html:115 templates/index.html:127
+msgid "kg/ha"
+msgstr "kg/ha"
+
+#: templates/about.html:186
+msgid "Phosphorus (P)"
+msgstr "फॉस्फोरस (P)"
+
+#: templates/about.html:190
+msgid "Potassium (K)"
+msgstr "पोटैशियम (K)"
+
+#: templates/about.html:194 templates/data_insights.html:138
+#: templates/index.html:133
+msgid "Temperature"
+msgstr "तापमान"
+
+#: templates/about.html:198 templates/data_insights.html:139
+msgid "Humidity"
+msgstr "आर्द्रता"
+
+#: templates/about.html:202 templates/about.html:203
+#: templates/data_insights.html:140
+msgid "pH"
+msgstr "pH"
+
+#: templates/about.html:206 templates/data_insights.html:141
+#: templates/index.html:162
+msgid "Rainfall"
+msgstr "वर्षा"
+
+#: templates/about.html:207 templates/index.html:165
+msgid "mm"
+msgstr "mm"
+
+#: templates/about.html:215 templates/index.html:181
+msgid "Supported Crops"
+msgstr "समर्थित फसलें"
+
+#: templates/about.html:218
+msgid "Our system can recommend the following crops based on your inputs:"
+msgstr "आपके इनपुट के आधार पर हमारा सिस्टम निम्नलिखित फसलों की अनुशंसा कर सकता है:"
+
+#: templates/about.html:223 templates/index.html:187
+msgid "Rice"
+msgstr "धान"
+
+#: templates/about.html:224 templates/index.html:188
+msgid "Maize"
+msgstr "मक्का"
+
+#: templates/about.html:225 templates/index.html:190
+msgid "Jute"
+msgstr "जूट"
+
+#: templates/about.html:226 templates/index.html:189
+msgid "Cotton"
+msgstr "कपास"
+
+#: templates/about.html:227 templates/index.html:191
+msgid "Orange"
+msgstr "संतरा"
+
+#: templates/about.html:228 templates/index.html:192
+msgid "Apple"
+msgstr "सेब"
+
+#: templates/about.html:233 templates/index.html:195
+msgid "Mango"
+msgstr "आम"
+
+#: templates/about.html:234 templates/index.html:196
+msgid "Banana"
+msgstr "केला"
+
+#: templates/about.html:235 templates/index.html:197
+msgid "Chickpea"
+msgstr "चना"
+
+#: templates/about.html:236 templates/index.html:198
+msgid "Coffee"
+msgstr "कॉफी"
+
+#: templates/about.html:237 templates/index.html:199
+msgid "Watermelon"
+msgstr "तरबूज"
+
+#: templates/about.html:238 templates/index.html:200
+msgid "Grapes"
+msgstr "अंगूर"
+
+#: templates/about.html:247
+msgid "Farming"
+msgstr "खेती"
+
+#: templates/about.html:249
+msgid "Jai Jawan Jai Kisan"
+msgstr "जय जवान जय किसान"
+
+#: templates/about.html:249
+msgid "Lal Bahadur Shastri"
+msgstr "लाल बहादुर शास्त्री"
+
+#: templates/base.html:6
+msgid "KRUSHIMITRA - Smart Crop Recommendation"
+msgstr "KRUSHIMITRA - स्मार्ट फसल अनुशंसा"
+
+#: templates/base.html:30
+msgid "Toggle navigation"
+msgstr "नेविगेशन टॉगल करें"
+
+#: templates/base.html:39 templates/base.html:73
+#: templates/data_insights.html:12
+msgid "Data Insights"
+msgstr "डेटा अंतर्दृष्टि"
+
+#: templates/base.html:61
+msgid "A machine learning-based crop recommendation system to help farmers make informed decisions."
+msgstr "किसानों को सूचित निर्णय लेने में मदद के लिए मशीन लर्निंग-आधारित फसल अनुशंसा प्रणाली।"
+
+#: templates/base.html:64
+msgid "An EDA Project by Pranav Ladkat, Snehal Mane, and Pratik Khatke"
+msgstr "प्रणव लडकट, स्नेहल माने और प्रतिक खटके द्वारा EDA परियोजना"
+
+#: templates/base.html:65
+msgid "AISSMS IOIT, Pune"
+msgstr "AISSMS IOIT, पुणे"
+
+#: templates/base.html:70
+msgid "Quick Links"
+msgstr "त्वरित लिंक"
+
+#: templates/base.html:78
+msgid "API Access"
+msgstr "API एक्सेस"
+
+#: templates/base.html:79
+msgid "Access our crop recommendation API for your agricultural applications."
+msgstr "अपनी कृषि अनुप्रयोगों के लिए हमारी फसल अनुशंसा API का उपयोग करें।"
+
+#: templates/base.html:80
+msgid "API Documentation"
+msgstr "API दस्तावेज़"
+
+#: templates/base.html:85
+msgid "KRUSHIMITRA - Agricultural Recommendation System"
+msgstr "KRUSHIMITRA - कृषि अनुशंसा प्रणाली"
+
+#: templates/data_insights.html:3
+msgid "Data Insights - Crop Recommendation System"
+msgstr "डेटा अंतर्दृष्टि - फसल अनुशंसा प्रणाली"
+
+#: templates/data_insights.html:22
+msgid "Data Insights and Visualization"
+msgstr "डेटा अंतर्दृष्टि और विज़ुअलाइज़ेशन"
+
+#: templates/data_insights.html:26
+msgid ""
+"\n"
+" Our model is trained on a dataset with 2200 samples across 22"
+" different crops.\n"
+" Here are some key insights from the exploratory data "
+"analysis.\n"
+" "
+msgstr ""
+"\n"
+" हमारा मॉडल 22 विभिन्न फसलों के 2200 नमूनों वाले डेटासेट पर प्रशिक्षित है।\n"
+" यहाँ अन्वेषणात्मक डेटा विश्लेषण (EDA) से कुछ प्रमुख अंतर्दृष्टियाँ दी गई हैं।\n"
+" "
+
+#: templates/data_insights.html:41 templates/data_insights.html:47
+msgid "Crop Distribution"
+msgstr "फसल वितरण"
+
+#: templates/data_insights.html:44
+msgid "The dataset contains an equal distribution of 22 different crops with 100 samples for each crop type."
+msgstr "इस डेटासेट में 22 विभिन्न फसलों का समान वितरण है; प्रत्येक फसल के 100 नमूने हैं।"
+
+#: templates/data_insights.html:57 templates/data_insights.html:63
+msgid "Feature Importance"
+msgstr "फ़ीचर महत्त्व"
+
+#: templates/data_insights.html:60
+msgid "The relative importance of each feature in the Random Forest model prediction."
+msgstr "रैंडम फ़ॉरेस्ट मॉडल की भविष्यवाणी में प्रत्येक फ़ीचर का सापेक्ष महत्त्व।"
+
+#: templates/data_insights.html:76
+msgid "Parameter Distribution by Crop"
+msgstr "फसल के अनुसार पैरामीटर वितरण"
+
+#: templates/data_insights.html:85
+#, python-format
+msgid "%(p)s Content by Crop"
+msgstr "%(p)s की मात्रा (फसल अनुसार)"
+
+#: templates/data_insights.html:89 templates/data_insights.html:108
+#, python-format
+msgid "%(p)s by Crop"
+msgstr "%(p)s (फसल अनुसार)"
+
+#: templates/data_insights.html:104
+#, python-format
+msgid "%(p)s Requirements"
+msgstr "%(p)s आवश्यकताएँ"
+
+#: templates/data_insights.html:126
+msgid "Statistical Summary"
+msgstr "सांख्यिकीय सारांश"
+
+#: templates/data_insights.html:129
+msgid "Descriptive Statistics of Features"
+msgstr "फ़ीचरों का वर्णनात्मक आँकड़ा"
+
+#: templates/data_insights.html:134
+msgid "Statistic"
+msgstr "सांख्यिकी"
+
+#: templates/data_insights.html:135
+msgid "N"
+msgstr "N"
+
+#: templates/data_insights.html:136
+msgid "P"
+msgstr "P"
+
+#: templates/data_insights.html:137
+msgid "K"
+msgstr "K"
+
+#: templates/data_insights.html:146
+msgid "Mean"
+msgstr "औसत"
+
+#: templates/data_insights.html:147
+msgid "Std"
+msgstr "मानक विचलन"
+
+#: templates/data_insights.html:148
+msgid "Min"
+msgstr "न्यूनतम"
+
+#: templates/data_insights.html:152
+msgid "Max"
+msgstr "अधिकतम"
+
+#: templates/data_insights.html:173
+msgid "Model Performance"
+msgstr "मॉडल प्रदर्शन"
+
+#: templates/data_insights.html:176
+msgid "Classification Metrics"
+msgstr "वर्गीकरण मीट्रिक्स"
+
+#: templates/data_insights.html:180
+msgid "Accuracy"
+msgstr "सटीकता"
+
+#: templates/data_insights.html:181
+msgid "Cross-Validation Score"
+msgstr "क्रॉस-वैलिडेशन स्कोर"
+
+#: templates/data_insights.html:181
+msgid "99.09% (mean of 5-fold CV)"
+msgstr "99.09% (5-फोल्ड CV का औसत)"
+
+#: templates/data_insights.html:182
+msgid "Precision (Macro Avg)"
+msgstr "प्रेसिशन (मैक्रो औसत)"
+
+#: templates/data_insights.html:183
+msgid "Recall (Macro Avg)"
+msgstr "रिकॉल (मैक्रो औसत)"
+
+#: templates/data_insights.html:184
+msgid "F1-Score (Macro Avg)"
+msgstr "F1-स्कोर (मैक्रो औसत)"
+
+#: templates/data_insights.html:189
+msgid "Hyperparameters"
+msgstr "हाइपरपैरामीटर"
+
+#: templates/data_insights.html:193
+msgid "Algorithm"
+msgstr "अल्गोरिद्म"
+
+#: templates/data_insights.html:193
+msgid "Random Forest Classifier"
+msgstr "रैंडम फ़ॉरेस्ट क्लासिफ़ायर"
+
+#: templates/data_insights.html:194
+msgid "n_estimators"
+msgstr "n_estimators"
+
+#: templates/data_insights.html:195
+msgid "max_depth"
+msgstr "max_depth"
+
+#: templates/data_insights.html:196
+msgid "min_samples_split"
+msgstr "min_samples_split"
+
+#: templates/data_insights.html:197
+msgid "min_samples_leaf"
+msgstr "min_samples_leaf"
+
+#: templates/data_insights.html:211
+msgid "Feature Correlations"
+msgstr "फ़ीचर सहसंबंध"
+
+#: templates/data_insights.html:214
+msgid "Correlation matrix showing the relationships between different soil and climate parameters."
+msgstr "विभिन्न मिट्टी व जलवायु पैरामीटरों के बीच संबंध दर्शाने वाला सहसंबंध मैट्रिक्स।"
+
+#: templates/data_insights.html:217
+msgid "Feature Correlation Matrix"
+msgstr "फ़ीचर सहसंबंध मैट्रिक्स"
+
+#: templates/error.html:3
+msgid "Error - Crop Recommendation System"
+msgstr "त्रुटि - फसल अनुशंसा प्रणाली"
+
+#: templates/error.html:11 templates/error.html:16
+msgid "Error"
+msgstr "त्रुटि"
+
+#: templates/error.html:21
+msgid "Oops! Something went wrong"
+msgstr "उफ़! कुछ गड़बड़ हो गई"
+
+#: templates/error.html:23
+msgid "We encountered an error while processing your request."
+msgstr "अनुरोध संसाधित करते समय एक त्रुटि मिली।"
+
+#: templates/error.html:26
+msgid "Error Details:"
+msgstr "त्रुटि विवरण:"
+
+#: templates/error.html:31
+msgid "What you can try:"
+msgstr "आप क्या कर सकते हैं:"
+
+#: templates/error.html:33
+msgid "Check if all input fields contain valid values within the specified ranges"
+msgstr "जाँचें कि सभी इनपुट फ़ील्ड निर्धारित सीमा के भीतर मान्य मान रखते हों"
+
+#: templates/error.html:34
+msgid "Make sure all fields are filled out correctly"
+msgstr "सुनिश्चित करें कि सभी फ़ील्ड सही ढंग से भरे गए हैं"
+
+#: templates/error.html:35
+msgid "Try refreshing the page and submitting the form again"
+msgstr "पेज ताज़ा करें और फ़ॉर्म पुनः सबमिट करने का प्रयास करें"
+
+#: templates/error.html:40
+msgid "Back to Home"
+msgstr "मुखपृष्ठ पर जाएँ"
+
+#: templates/error.html:41
+msgid "Go Back"
+msgstr "वापस जाएँ"
+
+#: templates/index.html:3
+msgid "KRUSHIMITRA - Smart Farming Advisor"
+msgstr "KRUSHIMITRA - स्मार्ट खेती सलाहकार"
+
+#: templates/index.html:23
+msgid "An AI-powered crop recommendation system to empower Indian farmers"
+msgstr "AI-संचालित फसल अनुशंसा प्रणाली जो भारतीय किसानों को सशक्त बनाती है"
+
+#: templates/index.html:24
+msgid "Get Started"
+msgstr "शुरू करें"
+
+#: templates/index.html:31
+msgid "Smart Crop Recommendation"
+msgstr "स्मार्ट फसल अनुशंसा"
+
+#: templates/index.html:33
+msgid ""
+"\n"
+" Our AI-powered system analyzes soil composition and "
+"environmental factors to recommend the optimal crop for your field.\n"
+" "
+msgstr ""
+"\n"
+" हमारा AI-संचालित सिस्टम मिट्टी की संरचना और पर्यावरणीय कारकों का विश्लेषण करके "
+"आपके खेत के लिए उपयुक्त फसल सुझाता है।\n"
+" "
+
+#: templates/index.html:38
+msgid ""
+"\n"
+" Make data-driven farming decisions with our machine learning "
+"technology, trained on extensive agricultural datasets.\n"
+" "
+msgstr ""
+"\n"
+" विस्तृत कृषि डेटासेट पर प्रशिक्षित हमारी मशीन लर्निंग तकनीक के साथ डेटा-आधारित "
+"कृषि निर्णय लें।\n"
+" "
+
+#: templates/index.html:43 templates/index.html:172
+msgid "Get Crop Recommendation"
+msgstr "फसल सिफारिश प्राप्त करें"
+
+#: templates/index.html:44
+msgid "View Data Insights"
+msgstr "डेटा अंतर्दृष्टि देखें"
+
+#: templates/index.html:58
+msgid "Soil Analysis"
+msgstr "मिट्टी विश्लेषण"
+
+#: templates/index.html:59
+msgid "Enter your soil's NPK values and pH level"
+msgstr "अपनी मिट्टी के NPK मान और pH स्तर दर्ज करें"
+
+#: templates/index.html:67
+msgid "Climate Data"
+msgstr "जलवायु डेटा"
+
+#: templates/index.html:68
+msgid "Input temperature, humidity, and rainfall data"
+msgstr "तापमान, आर्द्रता और वर्षा का डेटा दर्ज करें"
+
+#: templates/index.html:76
+msgid "AI Analysis"
+msgstr "AI विश्लेषण"
+
+#: templates/index.html:77
+msgid "Our model processes your field's unique conditions"
+msgstr "हमारा मॉडल आपके खेत की विशिष्ट परिस्थितियों को संसाधित करता है"
+
+#: templates/index.html:85
+msgid "Crop Recommendation"
+msgstr "फसल अनुशंसा"
+
+#: templates/index.html:86
+msgid "Get personalized crop suggestions with confidence score"
+msgstr "विश्वसनीयता स्कोर के साथ व्यक्तिगत फसल सुझाव प्राप्त करें"
+
+#: templates/index.html:97
+msgid "Crop Recommendation Form"
+msgstr "फसल अनुशंसा फ़ॉर्म"
+
+#: templates/index.html:103
+msgid "Nitrogen (N) Content"
+msgstr "नाइट्रोजन (N) मात्रा"
+
+#: templates/index.html:108
+msgid "Range: 0-140 kg/ha"
+msgstr "परास: 0-140 kg/ha"
+
+#: templates/index.html:109
+msgid "Please enter a valid nitrogen value."
+msgstr "कृपया मान्य नाइट्रोजन मान दर्ज करें।"
+
+#: templates/index.html:112
+msgid "Phosphorus (P) Content"
+msgstr "फॉस्फोरस (P) मात्रा"
+
+#: templates/index.html:117
+msgid "Range: 5-145 kg/ha"
+msgstr "परास: 5-145 kg/ha"
+
+#: templates/index.html:118
+msgid "Please enter a valid phosphorus value."
+msgstr "कृपया मान्य फॉस्फोरस मान दर्ज करें।"
+
+#: templates/index.html:124
+msgid "Potassium (K) Content"
+msgstr "पोटैशियम (K) मात्रा"
+
+#: templates/index.html:129
+msgid "Range: 5-205 kg/ha"
+msgstr "परास: 5-205 kg/ha"
+
+#: templates/index.html:130
+msgid "Please enter a valid potassium value."
+msgstr "कृपया मान्य पोटैशियम मान दर्ज करें।"
+
+#: templates/index.html:136
+msgid "°C"
+msgstr "°C"
+
+#: templates/index.html:138
+msgid "Range: 8.8-43.7 °C"
+msgstr "परास: 8.8-43.7 °C"
+
+#: templates/index.html:139
+msgid "Please enter a valid temperature value."
+msgstr "कृपया मान्य तापमान मान दर्ज करें।"
+
+#: templates/index.html:145
+msgid "Relative Humidity"
+msgstr "सापेक्ष आर्द्रता"
+
+#: templates/index.html:148
+msgid "%"
+msgstr "%"
+
+#: templates/index.html:150
+msgid "Range: 14.3-100%"
+msgstr "परास: 14.3-100%"
+
+#: templates/index.html:151
+msgid "Please enter a valid humidity value."
+msgstr "कृपया मान्य आर्द्रता मान दर्ज करें।"
+
+#: templates/index.html:154
+msgid "pH Value"
+msgstr "pH मान"
+
+#: templates/index.html:156
+msgid "Range: 3.5-10 pH"
+msgstr "परास: 3.5-10 pH"
+
+#: templates/index.html:157
+msgid "Please enter a valid pH value."
+msgstr "कृपया मान्य pH मान दर्ज करें।"
+
+#: templates/index.html:167
+msgid "Range: 20.2-298.6 mm"
+msgstr "परास: 20.2-298.6 mm"
+
+#: templates/index.html:168
+msgid "Please enter a valid rainfall value."
+msgstr "कृपया मान्य वर्षा मान दर्ज करें।"
+
+#: templates/index.html:173
+msgid "Reset Form"
+msgstr "फ़ॉर्म रीसेट करें"
+
+#: templates/index.html:184
+msgid "Our system can recommend these crops based on your inputs:"
+msgstr "आपके इनपुट के आधार पर हमारा सिस्टम ये फसलें सुझा सकता है:"

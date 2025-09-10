@@ -1,7 +1,9 @@
 # utils/roi.py
 from typing import Optional, Dict
+from flask_babel import gettext as _  # ready for any future user-facing messages [no strings yet]
 
 # MSP crops in ₹ per quintal (update every season from official MSP notices)
+# NOTE: Keep keys un-translated for stable lookups; UI shows translated labels elsewhere.
 DEFAULT_MSP_RSQ = {
     "rice": 2300,
     "maize": 2225,
@@ -11,8 +13,12 @@ DEFAULT_MSP_RSQ = {
 }
 
 # Rough default yields (edit per district if you have better priors)
+# NOTE: Keep keys un-translated for stable lookups; localize labels in templates.
 DEFAULT_YIELD_Q_PER_ACRE = {"rice": 10, "maize": 14, "cotton": 8, "jute": 8, "chickpea": 6}
-DEFAULT_YIELD_KG_PER_ACRE = {"banana": 30000, "mango": 4000, "grapes": 8000, "orange": 5000, "apple": 4000, "coffee": 800, "watermelon": 10000}
+DEFAULT_YIELD_KG_PER_ACRE = {
+    "banana": 30000, "mango": 4000, "grapes": 8000,
+    "orange": 5000, "apple": 4000, "coffee": 800, "watermelon": 10000
+}
 
 MSP_CROPS = set(DEFAULT_MSP_RSQ.keys())
 
@@ -39,4 +45,5 @@ def compute_roi(
         gross = p * y  # ₹
 
     net = gross - (total_cost_per_acre or 0.0)
+    # Keys 'gross' and 'net' are programmatic; labels are translated in templates (result.html).
     return {"gross": round(gross, 2), "net": round(net, 2)}

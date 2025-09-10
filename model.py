@@ -9,20 +9,22 @@ from sklearn.metrics import accuracy_score, classification_report
 import joblib
 import warnings
 
-warnings.filterwarnings('ignore')
+# i18n: use Flask-Babel's gettext for user-facing messages
+from flask_babel import gettext as _
 
+warnings.filterwarnings('ignore')
 
 def train_crop_recommendation_model():
     """Train and save the crop recommendation model."""
-    print("Loading dataset...")
+    print(_("Loading dataset..."))
     crop = pd.read_csv("Crop_recommendation.csv")
 
     # Check for missing values
     if crop.isnull().sum().sum() > 0:
-        print(f"Found {crop.isnull().sum().sum()} missing values. Cleaning data...")
+        print(_("Found %(n)d missing values. Cleaning data...", n=int(crop.isnull().sum().sum())))
         crop = crop.dropna()
 
-    # Create label encoding
+    # Create label encoding (keys are programmatic; do not translate)
     crop_dict = {
         'rice': 1, 'maize': 2, 'jute': 3, 'cotton': 4, 'coconut': 5, 'papaya': 6,
         'orange': 7, 'apple': 8, 'muskmelon': 9, 'watermelon': 10, 'grapes': 11,
@@ -38,10 +40,10 @@ def train_crop_recommendation_model():
     X = crop.drop('label', axis=1)
     y = crop['label']
 
-    print("Splitting data into training and testing sets...")
+    print(_("Splitting data into training and testing sets..."))
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    print("Applying feature scaling...")
+    print(_("Applying feature scaling..."))
     minmax = MinMaxScaler()
     X_train_minmax = minmax.fit_transform(X_train)
     X_test_minmax = minmax.transform(X_test)
@@ -50,13 +52,13 @@ def train_crop_recommendation_model():
     X_train_scaled = std_scaler.fit_transform(X_train_minmax)
     X_test_scaled = std_scaler.transform(X_test_minmax)
 
-    print("Training Random Forest model with cross-validation...")
+    print(_("Training Random Forest model with cross-validation..."))
     base_model = RandomForestClassifier(random_state=42)
     cv_scores = cross_val_score(base_model, X_train_scaled, y_train, cv=5)
-    print(f"Cross Validation Scores: {cv_scores}")
-    print(f"Mean CV Score: {cv_scores.mean():.4f}")
+    print(_("Cross Validation Scores: %(scores)s", scores=cv_scores))
+    print(_("Mean CV Score: %(score).4f", score=cv_scores.mean()))
 
-    print("Performing hyperparameter tuning...")
+    print(_("Performing hyperparameter tuning..."))
     param_grid = {
         'n_estimators': [50, 100, 150],
         'max_depth': [10, 20, 30, None],
@@ -68,34 +70,33 @@ def train_crop_recommendation_model():
                                param_grid, cv=5, n_jobs=-1)
     grid_search.fit(X_train_scaled, y_train)
 
-    print(f"Best Parameters: {grid_search.best_params_}")
-    print(f"Best CV Score: {grid_search.best_score_:.4f}")
+    print(_("Best Parameters: %(params)s", params=grid_search.best_params_))
+    print(_("Best CV Score: %(score).4f", score=grid_search.best_score_))
 
     best_model = grid_search.best_estimator_
 
     y_pred = best_model.predict(X_test_scaled)
     test_accuracy = accuracy_score(y_test, y_pred)
-    print(f"Test Accuracy: {test_accuracy:.4f}")
-    print("\nClassification Report:")
+    print(_("Test Accuracy: %(acc).4f", acc=test_accuracy))
+    print(_("\nClassification Report:"))
     print(classification_report(y_test, y_pred))
 
-    print("\nFeature Importances:")
+    print(_("\nFeature Importances:"))
     feature_names = X.columns
     importances = best_model.feature_importances_
     indices = np.argsort(importances)[::-1]
 
     for i in range(len(feature_names)):
-        print(f"{feature_names[indices[i]]}: {importances[indices[i]]:.4f}")
+        print(_("%(name)s: %(imp).4f", name=feature_names[indices[i]], imp=importances[indices[i]]))
 
-    print("\nSaving model and preprocessing objects...")
+    print(_("\nSaving model and preprocessing objects..."))
     joblib.dump(best_model, 'crop_recommendation_model.pkl')
     joblib.dump(minmax, 'minmax_scaler.pkl')
     joblib.dump(std_scaler, 'standard_scaler.pkl')
     joblib.dump(inverse_crop_dict, 'crop_labels.pkl')
 
-    print("Model training completed successfully!")
+    print(_("Model training completed successfully!"))
     return best_model, minmax, std_scaler, inverse_crop_dict
-
 
 def predict_crop(N, P, K, temperature, humidity, ph, rainfall):
     """
@@ -109,21 +110,23 @@ def predict_crop(N, P, K, temperature, humidity, ph, rainfall):
         std_scaler = joblib.load('standard_scaler.pkl')
         crop_labels = joblib.load('crop_labels.pkl')
     except FileNotFoundError:
+        # Localized console notice; UI templates show user messages
+        print(_("Model artifacts not found. Training a new model..."))
         model, minmax, std_scaler, crop_labels = train_crop_recommendation_model()
 
     features = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
     features_minmax = minmax.transform(features)
     features_scaled = std_scaler.transform(features_minmax)
 
-    prediction = model.predict(features_scaled)[0]
-    probabilities = model.predict_proba(features_scaled)[0]
+    prediction = model.predict(features_scaled)
+    probabilities = model.predict_proba(features_scaled)
     max_prob = max(probabilities) * 100
     crop_name = crop_labels[prediction]
 
     return crop_name, max_prob
 
-
 if __name__ == "__main__":
+    print(_("Starting training via CLI..."))
     train_crop_recommendation_model()
 
     test_cases = [
@@ -137,13 +140,13 @@ if __name__ == "__main__":
         }
     ]
 
-    print("\nTesting prediction with sample data:")
+    print(_("\nTesting prediction with sample data:"))
     for i, test in enumerate(test_cases):
         crop_name, probability = predict_crop(
             test['N'], test['P'], test['K'], test['temperature'],
             test['humidity'], test['ph'], test['rainfall']
         )
-        print(f"\nTest Case {i + 1}:")
-        print(f"Input: {test}")
-        print(f"Predicted Crop: {crop_name}")
-        print(f"Confidence: {probability:.2f}%")
+        print(_("\nTest Case %(n)d:", n=i + 1))
+        print(_("Input: %(inp)s", inp=test))
+        print(_("Predicted Crop: %(crop)s", crop=crop_name))
+        print(_("Confidence: %(p).2f%%", p=probability))

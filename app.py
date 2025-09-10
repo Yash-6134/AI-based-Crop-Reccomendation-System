@@ -1,6 +1,6 @@
 # app.py
-from flask import Flask, render_template, request, jsonify, session  # added session
-from flask_babel import Babel, lazy_gettext as _l  # Babel + lazy i18n for globals
+from flask import Flask, render_template, request, jsonify, session
+from flask_babel import Babel, gettext as _, lazy_gettext as _l,get_locale as babel_get_locale  # added gettext as _
 import pandas as pd
 import numpy as np
 import joblib
@@ -13,20 +13,25 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'change-me'  # required for storing chosen language in session
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
-LANGUAGES = {'en': 'English', 'hi': 'Hindi', 'mr': 'Marathi'}
+
+# Language names are potentially shown in UI; mark with lazy_gettext at module scope
+LANGUAGES = {'en': _l('English'), 'hi': _l('Hindi'), 'mr': _l('Marathi')}
 
 babel = Babel()
 
-@babel.locale_selector
-def get_locale():
-    # Priority: URL ?lang=xx > saved session > browser header > default
+def select_locale():  # renamed to avoid name clash
     lang = request.args.get('lang')
     if lang in LANGUAGES:
         session['lang'] = lang
         return lang
     return session.get('lang') or request.accept_languages.best_match(LANGUAGES.keys()) or 'en'
 
-babel.init_app(app, default_locale='en')
+# register selector in FB 4.x
+babel.init_app(app, locale_selector=select_locale)
+
+@app.context_processor
+def inject_get_locale():
+    return {'get_locale': lambda: str(babel_get_locale())}
 
 # Crop descriptions for the UI (wrapped with lazy _l so translation happens per request)
 CROP_INFO = {
@@ -142,6 +147,7 @@ CROP_INFO = {
 
 @app.route('/')
 def home():
+    # Page content is translated in templates
     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
@@ -161,9 +167,9 @@ def predict():
             crop_name, confidence = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
             predicted_crop = crop_name.lower()
 
-            # 3) Get crop information
-            crop_description = CROP_INFO.get(predicted_crop, {}).get('description', _l('No description available.'))
-            ideal_conditions = CROP_INFO.get(predicted_crop, {}).get('ideal_conditions', _l('Information not available.'))
+            # 3) Get crop information with translated fallbacks (use gettext inside handlers)
+            crop_description = CROP_INFO.get(predicted_crop, {}).get('description', _('No description available.'))
+            ideal_conditions = CROP_INFO.get(predicted_crop, {}).get('ideal_conditions', _('Information not available.'))
 
             from utils.roi import compute_roi, is_msp_crop
 
@@ -208,6 +214,7 @@ def predict():
             )
 
         except Exception as e:
+            # Use a translated generic error label; actual exception is shown in template
             return render_template('error.html', error=str(e))
 
     # Fallback GET
@@ -238,15 +245,15 @@ def api_predict():
         crop_key = crop_name.lower()  # ensure consistent lookup for CROP_INFO
 
         response = {
-            'status': 'success',
+            'status': 'success',  # API keys/values are typically kept stable for clients
             'prediction': {
                 'crop': crop_name.title(),
                 'confidence': round(confidence, 2)
             },
             # CROP_INFO values are lazy and will render in the current locale when converted to string
             'crop_info': {
-                'description': str(CROP_INFO.get(crop_key, {}).get('description', _l('No description available.'))),
-                'ideal_conditions': str(CROP_INFO.get(crop_key, {}).get('ideal_conditions', _l('Information not available.')))
+                'description': str(CROP_INFO.get(crop_key, {}).get('description', _('No description available.'))),
+                'ideal_conditions': str(CROP_INFO.get(crop_key, {}).get('ideal_conditions', _('Information not available.')))
             }
         }
 
@@ -255,11 +262,11 @@ def api_predict():
     except Exception as e:
         return jsonify({
             'status': 'error',
-            'message': str(e)
+            'message': str(e)  # error text is whatever was raised; could be localized at source if desired
         }), 400
 
 if __name__ == '__main__':
-    # Check if model exists, if not train it
+    # Check if model exists, if not train it (console message is developer-facing; no translation required)
     if not os.path.exists('crop_recommendation_model.pkl'):
         print("Model not found. Training new model...")
         train_crop_recommendation_model()
