@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-09 22:40+0530\n"
+"POT-Creation-Date: 2025-09-10 13:38+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:168 app.py:252
+#: app.py:171 app.py:255
 msgid "No description available."
 msgstr ""
 
-#: app.py:169 app.py:253
+#: app.py:172 app.py:256
 msgid "Information not available."
 msgstr ""
 
@@ -617,10 +617,6 @@ msgstr ""
 msgid "Cross-Validation Score"
 msgstr ""
 
-#: templates/data_insights.html:181
-msgid "99.09% (mean of 5-fold CV)"
-msgstr ""
-
 #: templates/data_insights.html:182
 msgid "Precision (Macro Avg)"
 msgstr ""
@@ -845,14 +841,6 @@ msgstr ""
 
 #: templates/index.html:145
 msgid "Relative Humidity"
-msgstr ""
-
-#: templates/index.html:148
-msgid "%"
-msgstr ""
-
-#: templates/index.html:150
-msgid "Range: 14.3-100 %"
 msgstr ""
 
 #: templates/index.html:151

@@ -1,27 +1,24 @@
-Marathi translations for KRUSHIMITRA.
-Copyright (C) 2025 KRUSHIMITRA
-This file is distributed under the same license as the KRUSHIMITRA project.
-FIRST AUTHOR EMAIL@ADDRESS, 2025.
+
 msgid ""
 msgstr ""
-"Project-Id-Version: KRUSHIMITRA\n"
+"Project-Id-Version:  KRUSHIMITRA\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-09 22:40+0530\n"
+"POT-Creation-Date: 2025-09-10 13:38+0530\n"
 "PO-Revision-Date: 2025-09-09 22:44+0530\n"
 "Last-Translator: FULL NAME EMAIL@ADDRESS\n"
 "Language: mr\n"
 "Language-Team: Marathi LL@li.org\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:168 app.py:252
+#: app.py:171 app.py:255
 msgid "No description available."
 msgstr "वर्णन उपलब्ध नाही."
 
-#: app.py:169 app.py:253
+#: app.py:172 app.py:256
 msgid "Information not available."
 msgstr "माहिती उपलब्ध नाही."
 
@@ -188,37 +185,39 @@ msgid "KRUSHIMITRA: Smart Crop Recommendation System"
 msgstr "KRUSHIMITRA: स्मार्ट पीक शिफारस प्रणाली"
 
 #: templates/about.html:34
+#, fuzzy
 msgid ""
 "\n"
-" This project leverages machine learning to recommend optimal "
+"            This project leverages machine learning to recommend optimal "
 "crops based on soil nutrient content and environmental conditions.\n"
-" "
+"            "
 msgstr ""
 "\n"
-" हा प्रकल्प मशीन लर्निंगचा उपयोग करून मातीतील पोषक द्रव्ये आणि "
-"पर्यावरणीय परिस्थितींवर आधारित योग्य पिकांची शिफारस करतो.\n"
+" हा प्रकल्प मशीन लर्निंगचा उपयोग करून मातीतील पोषक द्रव्ये आणि पर्यावरणीय"
+" परिस्थितींवर आधारित योग्य पिकांची शिफारस करतो.\n"
 " "
 
 #: templates/about.html:40
+#, fuzzy
 msgid ""
 "\n"
-" Agriculture plays a critical role in India's economic "
+"            Agriculture plays a critical role in India's economic "
 "development and is the backbone of our agrarian economy.\n"
-" By using machine learning to recommend crops, we can increase"
+"            By using machine learning to recommend crops, we can increase"
 " agricultural productivity and sustainability.\n"
-" Our system analyzes soil composition (Nitrogen, Phosphorus, "
+"            Our system analyzes soil composition (Nitrogen, Phosphorus, "
 "Potassium), weather conditions (temperature, humidity, rainfall),\n"
-" and soil pH to recommend the crop most likely to thrive in "
+"            and soil pH to recommend the crop most likely to thrive in "
 "those conditions.\n"
-" "
+"            "
 msgstr ""
 "\n"
-" भारताच्या आर्थिक विकासात शेती अत्यंत महत्त्वाची भूमिका बजावते आणि "
-"आपल्या कृषी अर्थव्यवस्थेचा कणा आहे.\n"
+" भारताच्या आर्थिक विकासात शेती अत्यंत महत्त्वाची भूमिका बजावते आणि आपल्या"
+" कृषी अर्थव्यवस्थेचा कणा आहे.\n"
 " मशीन लर्निंगच्या सहाय्याने पिकांची शिफारस केल्याने उत्पादकता आणि "
 "शाश्वतता वाढवता येते.\n"
-" आमची प्रणाली मातीची रचना (नायट्रोजन, फॉस्फरस, पोटॅशियम), हवामान "
-"स्थिती (तापमान, आर्द्रता, पर्जन्यमान)\n"
+" आमची प्रणाली मातीची रचना (नायट्रोजन, फॉस्फरस, पोटॅशियम), हवामान स्थिती "
+"(तापमान, आर्द्रता, पर्जन्यमान)\n"
 " आणि मातीचे pH विश्लेषित करून त्या परिस्थितीत चांगले वाढणारे पीक सुचवते.\n"
 " "
 
@@ -227,13 +226,14 @@ msgid "How It Works"
 msgstr "कसे कार्य करते"
 
 #: templates/about.html:50
+#, fuzzy
 msgid ""
 "\n"
-" Our system uses a Random Forest classification algorithm "
+"            Our system uses a Random Forest classification algorithm "
 "trained on a comprehensive dataset of crop growth conditions.\n"
-" This model identifies complex patterns in the data to provide"
+"            This model identifies complex patterns in the data to provide"
 " accurate crop recommendations.\n"
-" "
+"            "
 msgstr ""
 "\n"
 " आमची प्रणाली पिकांच्या वाढीच्या परिस्थितींवरील व्यापक डेटासेटवर "
@@ -507,8 +507,8 @@ msgid ""
 "A machine learning-based crop recommendation system to help farmers make "
 "informed decisions."
 msgstr ""
-"शेतकऱ्यांना सूचित निर्णय घेण्यास मदत करणारी मशीन लर्निंग-आधारित पीक शिफारस "
-"प्रणाली."
+"शेतकऱ्यांना सूचित निर्णय घेण्यास मदत करणारी मशीन लर्निंग-आधारित पीक "
+"शिफारस प्रणाली."
 
 #: templates/base.html:64
 msgid "An EDA Project by Pranav Ladkat, Snehal Mane, and Pratik Khatke"
@@ -547,17 +547,20 @@ msgid "Data Insights and Visualization"
 msgstr "डेटा अंतर्दृष्टी आणि दृश्यांकन"
 
 #: templates/data_insights.html:26
+#, fuzzy
 msgid ""
 "\n"
-" Our model is trained on a dataset with 2200 samples across 22"
+"            Our model is trained on a dataset with 2200 samples across 22"
 " different crops.\n"
-" Here are some key insights from the exploratory data "
+"            Here are some key insights from the exploratory data "
 "analysis.\n"
-" "
+"            "
 msgstr ""
 "\n"
-" आमचे मॉडेल २२ विविध पिकांच्या २२०० नमुन्यांच्या डेटासेटवर प्रशिक्षित आहे.\n"
-" येथे Exploratory Data Analysis (EDA) मधील काही महत्त्वाच्या अंतर्दृष्टी आहेत.\n"
+" आमचे मॉडेल २२ विविध पिकांच्या २२०० नमुन्यांच्या डेटासेटवर प्रशिक्षित "
+"आहे.\n"
+" येथे Exploratory Data Analysis (EDA) मधील काही महत्त्वाच्या अंतर्दृष्टी "
+"आहेत.\n"
 " "
 
 #: templates/data_insights.html:41 templates/data_insights.html:47
@@ -569,7 +572,8 @@ msgid ""
 "The dataset contains an equal distribution of 22 different crops with 100"
 " samples for each crop type."
 msgstr ""
-"या डेटासेटमध्ये २२ पिकांचे समसमान वितरण आहे; प्रत्येक पिकाचे १०० नमुने आहेत."
+"या डेटासेटमध्ये २२ पिकांचे समसमान वितरण आहे; प्रत्येक पिकाचे १०० नमुने "
+"आहेत."
 
 #: templates/data_insights.html:57 templates/data_insights.html:63
 msgid "Feature Importance"
@@ -579,8 +583,7 @@ msgstr "फीचरचे महत्त्व"
 msgid ""
 "The relative importance of each feature in the Random Forest model "
 "prediction."
-msgstr ""
-"रँडम फॉरेस्ट मॉडेलच्या भाकितात प्रत्येक फीचरचे सापेक्ष महत्त्व."
+msgstr "रँडम फॉरेस्ट मॉडेलच्या भाकितात प्रत्येक फीचरचे सापेक्ष महत्त्व."
 
 #: templates/data_insights.html:76
 msgid "Parameter Distribution by Crop"
@@ -657,10 +660,6 @@ msgstr "अचूकता"
 msgid "Cross-Validation Score"
 msgstr "क्रॉस-व्हॅलिडेशन गुण"
 
-#: templates/data_insights.html:181
-msgid "99.09% (mean of 5-fold CV)"
-msgstr "99.09% (५-फोल्ड CV चे सरासरी)"
-
 #: templates/data_insights.html:182
 msgid "Precision (Macro Avg)"
 msgstr "प्रिसिजन (मॅक्रो सरासरी)"
@@ -709,8 +708,7 @@ msgstr "फीचर सहसंबंध"
 msgid ""
 "Correlation matrix showing the relationships between different soil and "
 "climate parameters."
-msgstr ""
-"भूसंरचना व हवामान पॅरामीटरमधील संबंध दर्शवणारा सहसंबंध मॅट्रिक्स."
+msgstr "भूसंरचना व हवामान पॅरामीटरमधील संबंध दर्शवणारा सहसंबंध मॅट्रिक्स."
 
 #: templates/data_insights.html:217
 msgid "Feature Correlation Matrix"
@@ -777,23 +775,25 @@ msgid "Smart Crop Recommendation"
 msgstr "स्मार्ट पीक शिफारस"
 
 #: templates/index.html:33
+#, fuzzy
 msgid ""
 "\n"
-" Our AI-powered system analyzes soil composition and "
+"          Our AI-powered system analyzes soil composition and "
 "environmental factors to recommend the optimal crop for your field.\n"
-" "
+"          "
 msgstr ""
 "\n"
-" आमची AI-संचालित प्रणाली मातीची रचना आणि पर्यावरणीय घटकांचे विश्लेषण करून "
-"आपल्या शेतासाठी योग्य पीक सुचवते.\n"
+" आमची AI-संचालित प्रणाली मातीची रचना आणि पर्यावरणीय घटकांचे विश्लेषण करून"
+" आपल्या शेतासाठी योग्य पीक सुचवते.\n"
 " "
 
 #: templates/index.html:38
+#, fuzzy
 msgid ""
 "\n"
-" Make data-driven farming decisions with our machine learning "
+"          Make data-driven farming decisions with our machine learning "
 "technology, trained on extensive agricultural datasets.\n"
-" "
+"          "
 msgstr ""
 "\n"
 " विस्तृत कृषी डेटासेटवर प्रशिक्षित आमच्या मशीन लर्निंग तंत्रज्ञानासह "
@@ -896,14 +896,6 @@ msgstr "कृपया वैध तापमान मूल्य प्र�
 msgid "Relative Humidity"
 msgstr "सापेक्ष आर्द्रता"
 
-#: templates/index.html:148
-msgid "%"
-msgstr "%"
-
-#: templates/index.html:150
-msgid "Range: 14.3-100%"
-msgstr "परिघ: 14.3-100%"
-
 #: templates/index.html:151
 msgid "Please enter a valid humidity value."
 msgstr "कृपया वैध आर्द्रता मूल्य प्रविष्ट करा."
@@ -935,3 +927,13 @@ msgstr "फॉर्म रीसेट करा"
 #: templates/index.html:184
 msgid "Our system can recommend these crops based on your inputs:"
 msgstr "आपल्या इनपुटच्या आधारे आमची प्रणाली ही पिके सुचवू शकते:"
+
+#~ msgid "99.09% (mean of 5-fold CV)"
+#~ msgstr "99.09% (५-फोल्ड CV चे सरासरी)"
+
+#~ msgid "%"
+#~ msgstr "%"
+
+#~ msgid "Range: 14.3-100%"
+#~ msgstr "परिघ: 14.3-100%"
+
