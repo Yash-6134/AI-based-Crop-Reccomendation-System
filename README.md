@@ -52,7 +52,12 @@ The UI has been enhanced with an agriculture theme, featuring:
 1. Clone the repository
 2. Install required dependencies:
    ```
-   pip install -r requirements.txt
+   install 3.10.11 python version
+   to check version 
+   python --version
+
+   python -m pip install -r requirements.txt
+
    ```
 3. Run the application:
    ```
