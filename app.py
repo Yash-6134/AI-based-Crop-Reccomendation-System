@@ -190,12 +190,16 @@ def predict():
             )
 
             # 5) Prepare response payload for template
+            # ...inside your /predict route...
             result = {
                 'crop': crop_name.title(),
                 'confidence': round(confidence, 2),
                 'description': crop_description,
-                'ideal_conditions': ideal_conditions
+                'ideal_conditions': ideal_conditions,
+                'image': f"{predicted_crop}.jpeg"  # <-- change .jpg to .jpeg
             }
+
+# ...rest of your code...
 
             return render_template(
                 'result.html',
