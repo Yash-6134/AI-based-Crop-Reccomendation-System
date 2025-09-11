@@ -159,7 +159,7 @@
         </div>
         <div class="card-body">
           <p class="mb-2">
-            {% trans gross=roi.gross net=roi.net %}Gross: ₹ {{ gross }} | Net (after cost): ₹ {{ net }}{% endtrans %}
+            {% trans gross=roi.gross, net=roi.net %}Gross: ₹ {{ gross }} | Net (after cost): ₹ {{ net }}{% endtrans %}
           </p>
 
           <!-- Recalculate ROI -->

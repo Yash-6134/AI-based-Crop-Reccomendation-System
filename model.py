@@ -110,7 +110,6 @@ def predict_crop(N, P, K, temperature, humidity, ph, rainfall):
         std_scaler = joblib.load('standard_scaler.pkl')
         crop_labels = joblib.load('crop_labels.pkl')
     except FileNotFoundError:
-        # Localized console notice; UI templates show user messages
         print(_("Model artifacts not found. Training a new model..."))
         model, minmax, std_scaler, crop_labels = train_crop_recommendation_model()
 
@@ -118,10 +117,13 @@ def predict_crop(N, P, K, temperature, humidity, ph, rainfall):
     features_minmax = minmax.transform(features)
     features_scaled = std_scaler.transform(features_minmax)
 
-    prediction = model.predict(features_scaled)
-    probabilities = model.predict_proba(features_scaled)
-    max_prob = max(probabilities) * 100
-    crop_name = crop_labels[prediction]
+    # Get scalar prediction and probability vector for the single sample
+    prediction = model.predict(features_scaled)           # (n_samples,) -> scalar [2][3]
+    probabilities = model.predict_proba(features_scaled)  # (n_samples, n_classes) -> (n_classes,) [2][3]
+    max_prob = float(np.max(probabilities)) * 100.0          # ensure Python float for formatting [4]
+
+# Look up crop name with an int key from the inverse mapping
+    crop_name = crop_labels[int(prediction)]  
 
     return crop_name, max_prob
 
