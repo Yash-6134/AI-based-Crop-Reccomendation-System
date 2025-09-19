@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation Result - KRUSHIMITRA</title>
+    
+    <!-- Enhanced Modern Style CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced-style.css') }}">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Result Page Specific Styles */
+        .result-hero {
+            padding: 8rem 0 2rem;
+            background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.05) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .result-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .result-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #171717 0%, #22c55e 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .result-subtitle {
+            font-size: 1.125rem;
+            color: #525252;
+        }
+        
+        /* Result Card */
+        .result-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e5e5;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+        }
+        
+        .crop-recommendation {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        
+        .crop-image-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: scaleIn 0.8s ease 0.3s both;
+        }
+        
+        .crop-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .confidence-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        
+        .crop-details {
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        
+        .crop-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #171717;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .crop-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22c55e;
+        }
+        
+        .crop-description {
+            color: #525252;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            white-space: pre-line;
+        }
+        
+        .ideal-conditions {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .ideal-conditions h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .condition-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .condition-icon {
+            width: 24px;
+            height: 24px;
+            color: #22c55e;
+        }
+        
+        .condition-value {
+            font-size: 0.875rem;
+            color: #525252;
+        }
+        
+        /* Input Summary */
+        .input-summary {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e5e5;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.5s both;
+        }
+        
+        .input-summary h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .input-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+            transition: all 0.3s ease;
+        }
+        
+        .input-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .input-label {
+            font-size: 0.875rem;
+            color: #737373;
+            font-weight: 500;
+        }
+        
+        .input-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #171717;
+        }
+        
+        /* ROI Section */
+        .roi-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e5e5;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        
+        .roi-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .roi-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .roi-card {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .roi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .roi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .roi-label {
+            font-size: 0.875rem;
+            color: #737373;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease 0.7s both;
+        }
+        
+        .btn-action {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #525252;
+            border: 2px solid #e5e5e5;
+        }
+        
+        .btn-secondary:hover {
+            background: #fafafa;
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .crop-recommendation {
+                grid-template-columns: 1fr;
+            }
+            
+            .crop-image-container {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            .input-grid,
+            .roi-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-action {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-container">
+                <a href="/" class="nav-brand">
+                    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="KrushiMitra Logo" class="nav-logo" style="height: 40px; margin-right: 12px;">
+                    <div>
+                        <div>KRUSHIMITRA</div>
+                        <div class="nav-tagline">जय जवान जय किसान</div>
+                    </div>
+                </a>
+                
+                <div class="nav-toggle" id="navToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/recommend" class="nav-link">Crop Recommendation</a></li>
+                    <li><a href="/insights" class="nav-link">Data Insights</a></li>
+                    <li><a href="/about" class="nav-link">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Result Hero -->
+    <section class="result-hero">
+        <div class="result-container">
+            <div class="result-header">
+                <h1 class="result-title">Crop Recommendation Result</h1>
+                <p class="result-subtitle">Based on your soil and environmental parameters</p>
+            </div>
+
+            <!-- Recommendation Card -->
+            <div class="result-card">
+                <div class="crop-recommendation">
+                    <div class="crop-image-container">
+                        <img src="{{ url_for('static', filename='images/' + result.image) }}" 
+                             alt="{{ result.crop }}" 
+                             class="crop-image"
+                             onerror="this.src='{{ url_for('static', filename='images/farming.png') }}'">
+                        <div class="confidence-badge">
+                            {{ result.confidence }}% Confidence
+                        </div>
+                    </div>
+                    
+                    <div class="crop-details">
+                        <div class="crop-name">
+                            <div class="crop-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                </svg>
+                            </div>
+                            {{ result.crop }}
+                        </div>
+                        
+                        <p class="crop-description">{{ result.description }}</p>
+                        
+                        <div class="ideal-conditions">
+                            <h3>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Ideal Conditions
+                            </h3>
+                            <p style="color: #525252; line-height: 1.6;">{{ result.ideal_conditions }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Summary -->
+            <div class="input-summary">
+                <h3>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    Your Input Parameters
+                </h3>
+                <div class="input-grid">
+                    <div class="input-item">
+                        <span class="input-label">Nitrogen (N)</span>
+                        <span class="input-value">{{ input_data.nitrogen }} kg/ha</span>
+                    </div>
+                    <div class="input-item">
+                        <span class="input-label">Phosphorus (P)</span>
+                        <span class="input-value">{{ input_data.phosphorus }} kg/ha</span>
+                    </div>
+                    <div class="input-item">
+                        <span class="input-label">Potassium (K)</span>
+                        <span class="input-value">{{ input_data.potassium }} kg/ha</span>
+                    </div>
+                    <div class="input-item">
+                        <span class="input-label">Temperature</span>
+                        <span class="input-value">{{ input_data.temperature }}°C</span>
+                    </div>
+                    <div class="input-item">
+                        <span class="input-label">Humidity</span>
+                        <span class="input-value">{{ input_data.humidity }}%</span>
+                    </div>
+                    <div class="input-item">
+                        <span class="input-label">pH Value</span>
+                        <span class="input-value">{{ input_data.ph }}</span>
+                    </div>
+                    <div class="input-item">
+                        <span class="input-label">Rainfall</span>
+                        <span class="input-value">{{ input_data.rainfall }} mm</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if result and result.roi %}
+            <!-- ROI Section -->
+            <div class="roi-section" style="margin-top: 2rem; background: #f8fafc; border-radius: 12px; padding: 1.5rem; border: 1px solid #e2e8f0;">
+                <h3 class="roi-header" style="display: flex; align-items: center; gap: 0.75rem; color: #1e293b; font-size: 1.25rem; margin-bottom: 1.5rem; font-weight: 600;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24" style="color: #22c55e;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Return on Investment Analysis
+                </h3>
+                <div class="roi-metrics" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="roi-card" style="background: white; border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div class="roi-value" style="font-size: 1.5rem; font-weight: 700; color: #22c55e; margin-bottom: 0.5rem;">₹{{ result.roi.gross_income|round|int }}</div>
+                        <div class="roi-label" style="color: #64748b; font-size: 0.875rem;">Gross Income</div>
+                    </div>
+                    <div class="roi-card" style="background: white; border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div class="roi-value" style="font-size: 1.5rem; font-weight: 700; color: #22c55e; margin-bottom: 0.5rem;">₹{{ result.roi.net_profit|round|int }}</div>
+                        <div class="roi-label" style="color: #64748b; font-size: 0.875rem;">Net Profit</div>
+                    </div>
+                    <div class="roi-card" style="background: white; border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div class="roi-value" style="font-size: 1.5rem; font-weight: 700; color: #22c55e; margin-bottom: 0.5rem;">{{ result.roi.roi_percentage|round(1) }}%</div>
+                        <div class="roi-label" style="color: #64748b; font-size: 0.875rem;">ROI Percentage</div>
+                    </div>
+                </div>
+                {% if result.roi.net_profit > 0 %}
+                <p style="margin-top: 1rem; color: #4b5563; font-size: 0.9rem; text-align: center;">
+                    <i class="fas fa-info-circle" style="color: #3b82f6; margin-right: 0.5rem;"></i>
+                    Based on your inputs, this crop shows a positive return on investment.
+                </p>
+                {% else %}
+                <p style="margin-top: 1rem; color: #ef4444; font-size: 0.9rem; text-align: center;">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>
+                    Note: This crop shows a negative return based on the provided inputs. Consider reviewing your cost structure.
+                </p>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="/recommend" class="btn-action btn-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Try Another
+                </a>
+                <a href="/insights" class="btn-action btn-secondary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    View Data Insights
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>Made with ❤️ for Indian Farmers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

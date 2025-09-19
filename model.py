@@ -24,13 +24,10 @@ def train_crop_recommendation_model():
         print(_("Found %(n)d missing values. Cleaning data...", n=int(crop.isnull().sum().sum())))
         crop = crop.dropna()
 
-    # Create label encoding (keys are programmatic; do not translate)
+    # Create label encoding for 12 available crops (keys are programmatic; do not translate)
     crop_dict = {
-        'rice': 1, 'maize': 2, 'jute': 3, 'cotton': 4, 'coconut': 5, 'papaya': 6,
-        'orange': 7, 'apple': 8, 'muskmelon': 9, 'watermelon': 10, 'grapes': 11,
-        'mango': 12, 'banana': 13, 'pomegranate': 14, 'lentil': 15, 'blackgram': 16,
-        'mungbean': 17, 'mothbeans': 18, 'pigeonpeas': 19, 'kidneybeans': 20,
-        'chickpea': 21, 'coffee': 22
+        'rice': 1, 'maize': 2, 'chickpea': 3, 'banana': 4, 'mango': 5, 'grapes': 6,
+        'watermelon': 7, 'apple': 8, 'orange': 9, 'cotton': 10, 'jute': 11, 'coffee': 12
     }
 
     inverse_crop_dict = {v: k for k, v in crop_dict.items()}
@@ -60,10 +57,12 @@ def train_crop_recommendation_model():
 
     print(_("Performing hyperparameter tuning..."))
     param_grid = {
-        'n_estimators': [50, 100, 150],
-        'max_depth': [10, 20, 30, None],
-        'min_samples_split': [2, 5],
-        'min_samples_leaf': [1, 2]
+        'n_estimators': [100, 200, 300],
+        'max_depth': [15, 25, 35, None],
+        'min_samples_split': [2, 3, 5],
+        'min_samples_leaf': [1, 2, 3],
+        'max_features': ['sqrt', 'log2', None],
+        'bootstrap': [True, False]
     }
 
     grid_search = GridSearchCV(RandomForestClassifier(random_state=42),

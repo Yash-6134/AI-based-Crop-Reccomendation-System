@@ -45,5 +45,16 @@ def compute_roi(
         gross = p * y  # ₹
 
     net = gross - (total_cost_per_acre or 0.0)
-    # Keys 'gross' and 'net' are programmatic; labels are translated in templates (result.html).
-    return {"gross": round(gross, 2), "net": round(net, 2)}
+    
+    # Calculate ROI percentage (net profit / cost) * 100
+    if total_cost_per_acre and total_cost_per_acre > 0:
+        roi_percent = (net / total_cost_per_acre) * 100
+    else:
+        roi_percent = 0.0
+    
+    # Return all values including ROI percentage
+    return {
+        "gross_income": round(gross, 2), 
+        "net_profit": round(net, 2),
+        "roi_percentage": round(roi_percent, 2)
+    }

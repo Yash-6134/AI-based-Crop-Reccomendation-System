@@ -1,0 +1,773 @@
+{% extends 'base_modern.html' %}
+
+{% block title %}KRUSHIMITRA - Smart Farming AI{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-content {
+        max-width: 1200px;
+        width: 100%;
+        padding: 0 2rem;
+        z-index: 2;
+    }
+
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .hero-text h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        color: white;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        font-family: 'Space Grotesk', sans-serif;
+        animation: slideInLeft 1s ease-out;
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg, #fff 0%, #ffd89b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-text p {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+        animation: slideInLeft 1.2s ease-out;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        animation: slideInLeft 1.4s ease-out;
+    }
+
+    .btn-primary {
+        padding: 1rem 2.5rem;
+        background: white;
+        color: var(--primary);
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-secondary {
+        padding: 1rem 2.5rem;
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background: white;
+        color: var(--primary);
+        transform: translateY(-5px) scale(1.05);
+    }
+
+    /* 3D Card */
+    .hero-card {
+        perspective: 1000px;
+        animation: slideInRight 1s ease-out;
+    }
+
+    .card-3d {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 3rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        transform-style: preserve-3d;
+        transition: transform 0.6s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-3d::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: rotate 10s linear infinite;
+    }
+
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .card-3d:hover {
+        transform: rotateY(10deg) rotateX(10deg);
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 5rem 2rem;
+        background: white;
+        position: relative;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .section-title h2 {
+        font-size: 3rem;
+        font-weight: 900;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .section-title p {
+        font-size: 1.25rem;
+        color: var(--text-light);
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s;
+    }
+
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: var(--primary-gradient);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 2rem;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: rotate(360deg) scale(1.1);
+    }
+
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .feature-description {
+        color: var(--text-light);
+        line-height: 1.6;
+    }
+
+    /* Form Section */
+    .form-section {
+        padding: 5rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+    }
+
+    .form-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .modern-form {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 3rem;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .form-header h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        position: relative;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+        pointer-events: none;
+    }
+
+    .form-range {
+        margin-top: 1rem;
+    }
+
+    .range-value {
+        text-align: center;
+        margin-top: 0.5rem;
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .form-submit {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .submit-btn {
+        padding: 1rem 3rem;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .submit-btn:hover::before {
+        width: 400px;
+        height: 400px;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Animations */
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .floating {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        padding: 4rem 2rem;
+        background: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 900;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .hero-text h1 {
+            font-size: 2rem;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="hero-grid">
+            <div class="hero-text" data-aos="fade-right">
+                <h1>
+                    <span class="gradient-text">{{ _('AI-Powered') }}</span><br>
+                    {{ _('Crop Recommendations') }}
+                </h1>
+                <p>{{ _('Transform your farming with intelligent crop predictions based on soil and climate data') }}</p>
+                <div class="hero-buttons">
+                    <button onclick="scrollToForm()" class="btn-primary">
+                        {{ _('Get Started') }} <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button onclick="location.href='/about'" class="btn-secondary">
+                        {{ _('Learn More') }} <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-card" data-aos="fade-left">
+                <div class="card-3d floating">
+                    <div style="text-align: center; position: relative; z-index: 1;">
+                        <i class="fas fa-seedling" style="font-size: 5rem; color: white; margin-bottom: 1rem;"></i>
+                        <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">KRUSHIMITRA</h2>
+                        <p style="color: rgba(255,255,255,0.9);">{{ _('Your Smart Farming Companion') }}</p>
+                        <div style="margin-top: 2rem;">
+                            <div style="display: flex; justify-content: space-around; text-align: center;">
+                                <div>
+                                    <div style="font-size: 2rem; font-weight: bold; color: white;">95%</div>
+                                    <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">{{ _('Accuracy') }}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 2rem; font-weight: bold; color: white;">22+</div>
+                                    <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">{{ _('Crops') }}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 2rem; font-weight: bold; color: white;">10K+</div>
+                                    <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">{{ _('Farmers') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section" id="features">
+    <div class="section-title" data-aos="fade-up">
+        <h2>{{ _('Why Choose KRUSHIMITRA?') }}</h2>
+        <p>{{ _('Advanced features designed for modern farming') }}</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="feature-title">{{ _('AI Intelligence') }}</h3>
+            <p class="feature-description">{{ _('Machine learning algorithms analyze multiple parameters for accurate predictions') }}</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="feature-title">{{ _('Profit Analysis') }}</h3>
+            <p class="feature-description">{{ _('Get ROI calculations and market price insights for better decisions') }}</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-icon">
+                <i class="fas fa-globe"></i>
+            </div>
+            <h3 class="feature-title">{{ _('Multi-Language') }}</h3>
+            <p class="feature-description">{{ _('Available in English, Hindi, and Marathi for wider accessibility') }}</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3 class="feature-title">{{ _('Mobile Ready') }}</h3>
+            <p class="feature-description">{{ _('Access from any device, anywhere, anytime') }}</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+            <div class="feature-icon">
+                <i class="fas fa-database"></i>
+            </div>
+            <h3 class="feature-title">{{ _('Data Insights') }}</h3>
+            <p class="feature-description">{{ _('Comprehensive analysis based on extensive agricultural data') }}</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+            <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="feature-title">{{ _('Reliable') }}</h3>
+            <p class="feature-description">{{ _('Trusted recommendations backed by scientific research') }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+            <div class="stat-number" data-count="95">0</div>
+            <div class="stat-label">{{ _('% Accuracy') }}</div>
+        </div>
+        <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+            <div class="stat-number" data-count="22">0</div>
+            <div class="stat-label">{{ _('Crop Types') }}</div>
+        </div>
+        <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+            <div class="stat-number" data-count="10000">0</div>
+            <div class="stat-label">{{ _('+ Happy Farmers') }}</div>
+        </div>
+        <div class="stat-card" data-aos="zoom-in" data-aos-delay="400">
+            <div class="stat-number" data-count="7">0</div>
+            <div class="stat-label">{{ _('Parameters Analyzed') }}</div>
+        </div>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="form-section" id="prediction-form">
+    <div class="form-container">
+        <div class="modern-form" data-aos="fade-up">
+            <div class="form-header">
+                <h3>{{ _('Get Your Crop Recommendation') }}</h3>
+                <p style="color: var(--text-light);">{{ _('Enter your soil and climate data for AI-powered suggestions') }}</p>
+            </div>
+            <form action="/predict" method="post" id="cropForm">
+                <div class="form-grid">
+                    <!-- Nitrogen -->
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="100">
+                        <label class="form-label" for="nitrogen">
+                            <i class="fas fa-flask" style="color: var(--primary);"></i> {{ _('Nitrogen (N)') }}
+                        </label>
+                        <input type="number" class="form-input" id="nitrogen" name="nitrogen" 
+                               min="0" max="140" step="1" required placeholder="90">
+                        <div class="range-value">0-140 kg/ha</div>
+                    </div>
+
+                    <!-- Phosphorus -->
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="200">
+                        <label class="form-label" for="phosphorus">
+                            <i class="fas fa-atom" style="color: var(--primary);"></i> {{ _('Phosphorus (P)') }}
+                        </label>
+                        <input type="number" class="form-input" id="phosphorus" name="phosphorus" 
+                               min="5" max="145" step="1" required placeholder="42">
+                        <div class="range-value">5-145 kg/ha</div>
+                    </div>
+
+                    <!-- Potassium -->
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="300">
+                        <label class="form-label" for="potassium">
+                            <i class="fas fa-leaf" style="color: var(--primary);"></i> {{ _('Potassium (K)') }}
+                        </label>
+                        <input type="number" class="form-input" id="potassium" name="potassium" 
+                               min="5" max="205" step="1" required placeholder="43">
+                        <div class="range-value">5-205 kg/ha</div>
+                    </div>
+
+                    <!-- Temperature -->
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="400">
+                        <label class="form-label" for="temperature">
+                            <i class="fas fa-temperature-high" style="color: #ff6b6b;"></i> {{ _('Temperature') }}
+                        </label>
+                        <input type="number" class="form-input" id="temperature" name="temperature" 
+                               min="8.8" max="43.7" step="0.1" required placeholder="25.5">
+                        <div class="range-value">8.8-43.7 °C</div>
+                    </div>
+
+                    <!-- Humidity -->
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="500">
+                        <label class="form-label" for="humidity">
+                            <i class="fas fa-tint" style="color: #4ecdc4;"></i> {{ _('Humidity') }}
+                        </label>
+                        <input type="number" class="form-input" id="humidity" name="humidity" 
+                               min="14.3" max="100" step="0.1" required placeholder="75">
+                        <div class="range-value">14.3-100 %</div>
+                    </div>
+
+                    <!-- pH -->
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="600">
+                        <label class="form-label" for="ph">
+                            <i class="fas fa-vial" style="color: #f7b731;"></i> {{ _('pH Value') }}
+                        </label>
+                        <input type="number" class="form-input" id="ph" name="ph" 
+                               min="3.5" max="10" step="0.1" required placeholder="6.5">
+                        <div class="range-value">3.5-10 pH</div>
+                    </div>
+
+                    <!-- Rainfall -->
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="700">
+                        <label class="form-label" for="rainfall">
+                            <i class="fas fa-cloud-rain" style="color: #5f27cd;"></i> {{ _('Rainfall') }}
+                        </label>
+                        <input type="number" class="form-input" id="rainfall" name="rainfall" 
+                               min="20.2" max="298.6" step="0.1" required placeholder="150">
+                        <div class="range-value">20.2-298.6 mm</div>
+                    </div>
+                </div>
+
+                <div class="form-submit">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-magic"></i> {{ _('Get Recommendation') }}
+                    </button>
+                    <button type="reset" class="submit-btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                        <i class="fas fa-redo"></i> {{ _('Reset') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Smooth scroll to form
+    function scrollToForm() {
+        document.getElementById('prediction-form').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }
+
+    // Animated counter
+    const counters = document.querySelectorAll('[data-count]');
+    const speed = 200;
+
+    const animateCounters = () => {
+        counters.forEach(counter => {
+            const animate = () => {
+                const value = +counter.getAttribute('data-count');
+                const data = +counter.innerText;
+                const time = value / speed;
+                
+                if (data < value) {
+                    counter.innerText = Math.ceil(data + time);
+                    setTimeout(animate, 1);
+                } else {
+                    counter.innerText = value;
+                    if (value === 10000) {
+                        counter.innerText = '10K';
+                    }
+                }
+            }
+            animate();
+        });
+    }
+
+    // Trigger counter animation on scroll
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        statsObserver.observe(statsSection);
+    }
+
+    // Form validation with animation
+    const cropForm = document.getElementById('cropForm');
+    
+    cropForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Add loading animation
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+        
+        // Submit form after animation
+        setTimeout(() => {
+            this.submit();
+        }, 500);
+    });
+
+    // Input animations
+    const inputs = document.querySelectorAll('.form-input');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+
+    // Parallax effect for hero section
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero-section');
+        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+    });
+</script>
+{% endblock %}

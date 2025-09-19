@@ -147,8 +147,12 @@ CROP_INFO = {
 
 @app.route('/')
 def home():
+    # Get language from query parameter or session
+    lang = request.args.get('lang')
+    if lang and lang in LANGUAGES:
+        session['lang'] = lang
     # Page content is translated in templates
-    return render_template('index.html')
+    return render_template('index_blink.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -190,10 +194,10 @@ def predict():
             )
 
             # 5) Prepare response payload for template
-            # ...inside your /predict route...
             result = {
                 'crop': crop_name.title(),
                 'confidence': round(confidence, 2),
+                'roi': roi,  # Pass the ROI data to the template
                 'description': crop_description,
                 'ideal_conditions': ideal_conditions,
                 'image': f"{predicted_crop}.jpeg"  # <-- change .jpg to .jpeg
@@ -202,7 +206,7 @@ def predict():
 # ...rest of your code...
 
             return render_template(
-                'result.html',
+                'result_blink.html',
                 result=result,
                 input_data={
                     'nitrogen': N,
@@ -226,53 +230,74 @@ def predict():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    lang = request.args.get('lang')
+    if lang and lang in LANGUAGES:
+        session['lang'] = lang
+    return render_template('about_blink.html')
 
-@app.route('/data-insights')
+@app.route('/insights')
 def data_insights():
-    return render_template('data_insights.html')
+    lang = request.args.get('lang')
+    if lang and lang in LANGUAGES:
+        session['lang'] = lang
+    return render_template('data_insights_blink.html')
 
-# API endpoint for programmatic access
 @app.route('/api/predict', methods=['POST'])
 def api_predict():
+    """API endpoint for ML predictions (can be triggered by voice or form)"""
     try:
         data = request.get_json()
-        N = float(data.get('nitrogen'))
-        P = float(data.get('phosphorus'))
-        K = float(data.get('potassium'))
-        temperature = float(data.get('temperature'))
-        humidity = float(data.get('humidity'))
-        ph = float(data.get('ph'))
-        rainfall = float(data.get('rainfall'))
-
-        crop_name, confidence = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
-        crop_key = crop_name.lower()  # ensure consistent lookup for CROP_INFO
-
-        response = {
-            'status': 'success',  # API keys/values are typically kept stable for clients
-            'prediction': {
-                'crop': crop_name.title(),
-                'confidence': round(confidence, 2)
-            },
-            # CROP_INFO values are lazy and will render in the current locale when converted to string
-            'crop_info': {
-                'description': str(CROP_INFO.get(crop_key, {}).get('description', _('No description available.'))),
-                'ideal_conditions': str(CROP_INFO.get(crop_key, {}).get('ideal_conditions', _('Information not available.')))
+        
+        # Extract parameters
+        N = float(data.get('nitrogen', 0))
+        P = float(data.get('phosphorus', 0))
+        K = float(data.get('potassium', 0))
+        temperature = float(data.get('temperature', 0))
+        humidity = float(data.get('humidity', 0))
+        ph = float(data.get('ph', 0))
+        rainfall = float(data.get('rainfall', 0))
+        
+        # Get prediction from ML model
+        predicted_crop, confidence = predict_crop(N, P, K, temperature, humidity, ph, rainfall)
+        
+        # Get crop information
+        crop_description = CROP_INFO.get(predicted_crop, {}).get('description', _('No description available'))
+        ideal_conditions = CROP_INFO.get(predicted_crop, {}).get('ideal_conditions', _('No conditions available'))
+        
+        return jsonify({
+            'success': True,
+            'crop': predicted_crop,
+            'confidence': round(confidence, 2),
+            'description': str(crop_description),
+            'ideal_conditions': str(ideal_conditions),
+            'input_data': {
+                'nitrogen': N,
+                'phosphorus': P,
+                'potassium': K,
+                'temperature': temperature,
+                'humidity': humidity,
+                'ph': ph,
+                'rainfall': rainfall
             }
-        }
-
-        return jsonify(response)
-
+        })
+        
     except Exception as e:
         return jsonify({
-            'status': 'error',
-            'message': str(e)  # error text is whatever was raised; could be localized at source if desired
+            'success': False,
+            'error': str(e)
         }), 400
 
+@app.route('/recommend')
+def recommend():
+    lang = request.args.get('lang')
+    if lang and lang in LANGUAGES:
+        session['lang'] = lang
+    return render_template('recommend_blink.html')
+
 if __name__ == '__main__':
-    # Check if model exists, if not train it (console message is developer-facing; no translation required)
+    # Check if model exists, if not train it
     if not os.path.exists('crop_recommendation_model.pkl'):
         print("Model not found. Training new model...")
         train_crop_recommendation_model()
-
+    
     app.run(debug=True)

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation Form - KRUSHIMITRA</title>
+    
+    <!-- Blink Style CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/blink-style.css') }}">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Form Page Layout */
+        .form-page {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+
+        /* Main Form Section */
+        .form-main {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Form Grid */
+        .form-inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .input-group:nth-child(1) { animation-delay: 0.1s; }
+        .input-group:nth-child(2) { animation-delay: 0.15s; }
+        .input-group:nth-child(3) { animation-delay: 0.2s; }
+        .input-group:nth-child(4) { animation-delay: 0.25s; }
+        .input-group:nth-child(5) { animation-delay: 0.3s; }
+        .input-group:nth-child(6) { animation-delay: 0.35s; }
+        .input-group:nth-child(7) { animation-delay: 0.4s; }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .input-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--primary-green);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--surface);
+        }
+
+        .input-field:hover {
+            border-color: #d1d5db;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .input-range {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Submit Button */
+        .form-submit {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .submit-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.25);
+        }
+
+        .reset-btn {
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            border-color: var(--text-secondary);
+            background: var(--background);
+        }
+
+        .voice-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .voice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .voice-btn:active {
+            transform: translateY(0);
+        }
+
+        .voice-btn.listening {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Sidebar */
+        .form-sidebar {
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .performance-card {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .perf-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--background);
+            border-radius: var(--radius-md);
+        }
+
+        .perf-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            display: block;
+        }
+
+        .perf-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .form-page {
+                grid-template-columns: 1fr;
+            }
+
+            .form-inputs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--text-primary);
+            color: white;
+            text-align: center;
+            border-radius: var(--radius-md);
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Analyzing your data...</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar-clean">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="KrushiMitra Logo" class="nav-logo" style="height: 40px; margin-right: 12px;">
+                <div>
+                    <div>KRUSHIMITRA</div>
+                    <div class="tagline">जय जवान जय किसान</div>
+                </div>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/recommend" class="nav-link active">Crop Recommendation</a></li>
+                <li><a href="/insights" class="nav-link">Data Insights</a></li>
+                <li><a href="/about" class="nav-link">About</a></li>
+                <li>
+                    <div class="lang-selector">
+                        <button class="lang-btn active">EN</button>
+                        <button class="lang-btn">हिं</button>
+                        <button class="lang-btn">मरा</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="form-page">
+            <!-- Main Form -->
+            <div class="form-main">
+                <div class="form-header">
+                    <h1 class="form-title">Crop Recommendation Form</h1>
+                    <p class="form-description">Enter your soil and environmental parameters to get personalized crop recommendations.</p>
+                </div>
+
+                <form id="cropForm" action="/predict" method="POST">
+                    <div class="form-inputs-grid">
+                        <!-- Nitrogen -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                                </svg>
+                                Nitrogen (N) Content
+                                <span class="tooltip">
+                                    <svg style="width: 14px; height: 14px; color: #9ca3af;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="tooltiptext">Nitrogen content in soil (kg/ha)</span>
+                                </span>
+                            </label>
+                            <input type="number" class="input-field" name="nitrogen" id="nitrogen" 
+                                   placeholder="90" min="0" max="140" step="0.1" required>
+                            <div class="input-range">Range: 0-140 kg/ha</div>
+                        </div>
+
+                        <!-- Phosphorus -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                                Phosphorus (P) Content
+                            </label>
+                            <input type="number" class="input-field" name="phosphorus" id="phosphorus" 
+                                   placeholder="42" min="5" max="145" step="0.1" required>
+                            <div class="input-range">Range: 5-145 kg/ha</div>
+                        </div>
+
+                        <!-- Potassium -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                </svg>
+                                Potassium (K) Content
+                            </label>
+                            <input type="number" class="input-field" name="potassium" id="potassium" 
+                                   placeholder="43" min="5" max="205" step="0.1" required>
+                            <div class="input-range">Range: 5-205 kg/ha</div>
+                        </div>
+
+                        <!-- Temperature -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                                Temperature
+                            </label>
+                            <input type="number" class="input-field" name="temperature" id="temperature" 
+                                   placeholder="25.5" min="8.8" max="43.7" step="0.1" required>
+                            <div class="input-range">Range: 8.8-43.7 °C</div>
+                        </div>
+
+                        <!-- Humidity -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                                </svg>
+                                Relative Humidity
+                            </label>
+                            <input type="number" class="input-field" name="humidity" id="humidity" 
+                                   placeholder="75" min="14.3" max="100" step="0.1" required>
+                            <div class="input-range">Range: 14.3-100 %</div>
+                        </div>
+
+                        <!-- pH Value -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                                </svg>
+                                pH Value
+                            </label>
+                            <input type="number" class="input-field" name="ph" id="ph" 
+                                   placeholder="6.5" min="3.5" max="10" step="0.1" required>
+                            <div class="input-range">Range: 3.5-10 pH</div>
+                        </div>
+
+                        <!-- Rainfall -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                                </svg>
+                                Rainfall
+                            </label>
+                            <input type="number" class="input-field" name="rainfall" id="rainfall" 
+                                   placeholder="150" min="20.2" max="298.6" step="0.1" required>
+                            <div class="input-range">Range: 20.2-298.6 mm</div>
+                        </div>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" class="submit-btn">
+                            Get Crop Recommendation
+                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </button>
+                        <button type="button" class="voice-btn" id="voiceBtn">
+                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                            </svg>
+                            Voice Input
+                        </button>
+                        <button type="reset" class="reset-btn">Reset Form</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="form-sidebar">
+                <!-- Model Performance -->
+                <div class="performance-card">
+                    <h3 class="card-title">Model Performance</h3>
+                    <div class="performance-grid">
+                        <div class="perf-item">
+                            <span class="perf-value">92.5%</span>
+                            <span class="perf-label">Model Accuracy</span>
+                        </div>
+                        <div class="perf-item">
+                            <span class="perf-value">22+</span>
+                            <span class="perf-label">Crop Types</span>
+                        </div>
+                        <div class="perf-item">
+                            <span class="perf-value">10K+</span>
+                            <span class="perf-label">Training Samples</span>
+                        </div>
+                        <div class="perf-item">
+                            <span class="perf-value">24/7</span>
+                            <span class="perf-label">Available</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips Card -->
+                <div class="performance-card">
+                    <h3 class="card-title">Quick Tips</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 0.875rem; line-height: 1.8;">
+                        <li style="margin-bottom: 0.5rem;">✓ Use recent soil test data for best results</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Consider local weather patterns</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Update values seasonally</li>
+                        <li>✓ Consult local experts for validation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Form submission
+        document.getElementById('cropForm').addEventListener('submit', function(e) {
+            const loader = document.getElementById('loadingOverlay');
+            loader.classList.add('active');
+        });
+
+        // Input animations
+        const inputs = document.querySelectorAll('.input-field');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+
+        // Voice Recognition Functionality
+        let recognition;
+        let isListening = false;
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            const voiceBtn = document.getElementById('voiceBtn');
+            
+            voiceBtn.addEventListener('click', function() {
+                if (!isListening) {
+                    startListening();
+                } else {
+                    stopListening();
+                }
+            });
+
+            function startListening() {
+                isListening = true;
+                voiceBtn.classList.add('listening');
+                voiceBtn.innerHTML = `
+                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
+                    </svg>
+                    Listening...
+                `;
+                recognition.start();
+            }
+
+            function stopListening() {
+                isListening = false;
+                voiceBtn.classList.remove('listening');
+                voiceBtn.innerHTML = `
+                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                    </svg>
+                    Voice Input
+                `;
+                recognition.stop();
+            }
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                parseVoiceInput(transcript);
+                stopListening();
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                stopListening();
+                alert('Voice recognition error. Please try again.');
+            };
+
+            recognition.onend = function() {
+                stopListening();
+            };
+
+            function parseVoiceInput(transcript) {
+                console.log('Voice input:', transcript);
+                
+                // Extract numbers from speech
+                const numbers = transcript.match(/\d+\.?\d*/g);
+                if (!numbers || numbers.length < 7) {
+                    alert('Please provide all 7 values: nitrogen, phosphorus, potassium, temperature, humidity, pH, and rainfall.');
+                    return;
+                }
+
+                // Map to form fields
+                const fields = ['nitrogen', 'phosphorus', 'potassium', 'temperature', 'humidity', 'ph', 'rainfall'];
+                fields.forEach((field, index) => {
+                    if (numbers[index]) {
+                        document.getElementById(field).value = numbers[index];
+                    }
+                });
+
+                // Auto-submit form after voice input
+                setTimeout(() => {
+                    if (confirm('Submit the form with voice input values?')) {
+                        document.getElementById('cropForm').submit();
+                    }
+                }, 1000);
+            }
+        } else {
+            // Hide voice button if speech recognition is not supported
+            document.getElementById('voiceBtn').style.display = 'none';
+        }
+
+        // Loading overlay
+        window.addEventListener('load', () => {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        });
+    </script>
+</body>
+</html>

@@ -23,9 +23,12 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-success">
     <div class="container">
-      <a class="navbar-brand" href="/">
-        <i class="fas fa-leaf me-2"></i>{{ _('KRUSHIMITRA') }}
-        <span class="tagline d-none d-lg-inline">| {{ _('जय जवान जय किसान') }}</span>
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="KrushiMitra Logo" style="height: 40px; margin-right: 10px;">
+        <div>
+          <div class="fw-bold">{{ _('KRUSHIMITRA') }}</div>
+          <div class="tagline d-none d-lg-block" style="font-size: 0.8rem;">{{ _('जय जवान जय किसान') }}</div>
+        </div>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="{{ _('Toggle navigation') }}">
         <span class="navbar-toggler-icon"></span>
@@ -61,8 +64,7 @@
           <p>{{ _('A machine learning-based crop recommendation system to help farmers make informed decisions.') }}</p>
           <p>
             <small>
-              {% trans %}An EDA Project by Pranav Ladkat, Snehal Mane, and Pratik Khatke{% endtrans %}<br>
-              {% trans %}AISSMS IOIT, Pune{% endtrans %}
+              {% trans %}An Agricultural Project by AISSMS IOIT Students{% endtrans %}
             </small>
           </p>
         </div>

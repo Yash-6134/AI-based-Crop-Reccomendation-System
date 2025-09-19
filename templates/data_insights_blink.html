@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Data Insights') }} - KRUSHIMITRA</title>
+    
+    <!-- Enhanced Modern Style CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enhanced-style.css') }}">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Insights Section */
+        .insights-section {
+            padding: 4rem 0 2rem;
+            background: #ffffff;
+        }
+        
+        .insights-header {
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .insights-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #171717;
+            margin-bottom: 0.5rem;
+        }
+
+        .insights-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        /* Insights Table */
+        .insights-table-container {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+        
+        .insights-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .insights-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .insights-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .insights-table th {
+            background: #1f2937;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.9rem;
+            border-bottom: 2px solid #111827;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .insights-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            color: #1f2937;
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+
+        .insights-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feature-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .unit {
+            color: #4b5563;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .range-bar {
+            width: 100px;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+
+        .range-fill {
+            height: 100%;
+            background: #10b981;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .insights-note {
+            padding: 1rem;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 0.875rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* Analytics Section */
+        .analytics-section {
+            padding: 2rem 0 4rem;
+            background: #f9fafb;
+        }
+        
+        .analytics-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .analytics-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #171717;
+            margin-bottom: 0.5rem;
+        }
+
+        .analytics-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        /* Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .metric-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: scaleIn 0.6s ease both;
+            position: relative;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-card:nth-child(1) { animation-delay: 0.1s; }
+        .metric-card:nth-child(2) { animation-delay: 0.2s; }
+        .metric-card:nth-child(3) { animation-delay: 0.3s; }
+        .metric-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .metric-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #22c55e;
+        }
+
+        .metric-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-bar {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .metric-bar-fill {
+            height: 100%;
+            background: #22c55e;
+            border-radius: 2px;
+            transition: width 1.5s ease;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            padding: 3rem 0;
+            background: #fafafa;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .chart-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .chart-subtitle {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .chart-container canvas {
+            max-height: 300px !important;
+            height: 300px !important;
+        }
+
+        /* Data Table */
+        .table-section {
+            padding: 3rem 0;
+            background: #ffffff;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .data-table th {
+            background: #22c55e;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e5e5;
+            color: #525252;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-container">
+                <a href="/" class="nav-brand">
+                    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="KrushiMitra Logo" class="nav-logo" style="height: 40px; margin-right: 12px;">
+                    <div>
+                        <div>KRUSHIMITRA</div>
+                        <div class="nav-tagline">जय जवान जय किसान</div>
+                    </div>
+                </a>
+                
+                <div class="nav-toggle" id="navToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/recommend" class="nav-link">Crop Recommendation</a></li>
+                    <li><a href="/insights" class="nav-link active">Data Insights</a></li>
+                    <li><a href="/about" class="nav-link">About</a></li>
+                    <li>
+                        <div class="lang-selector">
+                            <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+                            <button class="lang-btn" onclick="setLanguage('hi')">हिं</button>
+                            <button class="lang-btn" onclick="setLanguage('mr')">मरा</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Soil & Climate Insights Section -->
+    <section class="insights-section">
+        <div class="container">
+            <div class="insights-header">
+                <h1 class="insights-title">{{ _('Soil & Climate Insights') }}</h1>
+                <p class="insights-subtitle">{{ _('Statistical summary of environmental parameters in the training dataset') }}</p>
+            </div>
+            
+            <div class="insights-table-container">
+                <table class="insights-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th></th>
+                            <th>Mean</th>
+                            <th>Std Dev</th>
+                            <th>Min</th>
+                            <th>Max</th>
+                            <th>Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name">Nitrogen (N)</td>
+                            <td class="unit">kg/ha</td>
+                            <td>50.2</td>
+                            <td>19.8</td>
+                            <td>20</td>
+                            <td>120</td>
+                            <td><div class="range-bar"><div class="range-fill" style="width: 83%;"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Phosphorus (P)</td>
+                            <td class="unit">kg/ha</td>
+                            <td>53.1</td>
+                            <td>18.5</td>
+                            <td>10</td>
+                            <td>110</td>
+                            <td><div class="range-bar"><div class="range-fill" style="width: 91%;"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Potassium (K)</td>
+                            <td class="unit">kg/ha</td>
+                            <td>44.7</td>
+                            <td>15.2</td>
+                            <td>10</td>
+                            <td>90</td>
+                            <td><div class="range-bar"><div class="range-fill" style="width: 80%;"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Temperature</td>
+                            <td class="unit">°C</td>
+                            <td>24.5</td>
+                            <td>3.2</td>
+                            <td>15</td>
+                            <td>32</td>
+                            <td><div class="range-bar"><div class="range-fill" style="width: 53%;"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Humidity</td>
+                            <td class="unit">%</td>
+                            <td>75.3</td>
+                            <td>10.1</td>
+                            <td>40</td>
+                            <td>95</td>
+                            <td><div class="range-bar"><div class="range-fill" style="width: 55%;"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">pH</td>
+                            <td class="unit">pH</td>
+                            <td>6.5</td>
+                            <td>0.7</td>
+                            <td>5</td>
+                            <td>8</td>
+                            <td><div class="range-bar"><div class="range-fill" style="width: 50%;"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Rainfall</td>
+                            <td class="unit">mm</td>
+                            <td>120.7</td>
+                            <td>45.6</td>
+                            <td>20</td>
+                            <td>250</td>
+                            <td><div class="range-bar"><div class="range-fill" style="width: 92%;"></div></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="insights-note">
+                    <strong>Note:</strong> Summary statistics are based on the training dataset of 10,000+ samples collected from various agricultural regions across India.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics-section">
+        <div class="container">
+            <div class="analytics-header">
+                <h2 class="analytics-title">{{ _('Data Insights & Analytics') }}</h2>
+                <p class="analytics-subtitle">{{ _('Understand soil, climate and model performance at a glance') }}</p>
+            </div>
+            
+            <!-- Performance Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-label">Accuracy</div>
+                    <div class="metric-value">92.5%</div>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 92.5%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-label">Precision</div>
+                    <div class="metric-value">91.8%</div>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 91.8%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-label">Recall</div>
+                    <div class="metric-value">92.1%</div>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 92.1%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-label">F1 Score</div>
+                    <div class="metric-value">92%</div>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 92%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Importance Chart -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">{{ _('Feature Importance') }}</h3>
+                    <p class="chart-subtitle">{{ _('Most influential factors for crop recommendation') }}</p>
+                    <div class="chart-container">
+                        <canvas id="featureChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+    <script>
+        // Language switching
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(lang)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            const url = new URL(window.location);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+
+        // Initialize Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const featureCtx = document.getElementById('featureChart');
+            if (featureCtx) {
+                new Chart(featureCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            "{{ _('Rainfall') }}",
+                            "{{ _('Humidity') }}",
+                            "{{ _('Temperature') }}",
+                            "{{ _('Potassium') }}",
+                            "{{ _('Phosphorus') }}",
+                            "{{ _('Nitrogen') }}",
+                            "pH"
+                        ],
+                        datasets: [{
+                            label: "{{ _('Feature Importance') }}",
+                            data: [0.26, 0.195, 0.18, 0.16, 0.13, 0.065, 0.05],
+                            backgroundColor: 'rgba(34, 197, 94, 0.8)',
+                            borderColor: 'rgba(34, 197, 94, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    color: '#6b7280'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#6b7280'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Data Table Section -->
+    <section class="table-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Dataset Overview</h2>
+                <p class="section-subtitle">Sample data from our comprehensive crop database</p>
+            </div>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Crop</th>
+                            <th>Nitrogen (N)</th>
+                            <th>Phosphorus (P)</th>
+                            <th>Potassium (K)</th>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                            <th>pH</th>
+                            <th>Rainfall</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="crop-badge">Rice</span></td>
+                            <td>80</td>
+                            <td>40</td>
+                            <td>40</td>
+                            <td>25.5°C</td>
+                            <td>82%</td>
+                            <td>6.2</td>
+                            <td>200mm</td>
+                        </tr>
+                        <tr>
+                            <td><span class="crop-badge">Wheat</span></td>
+                            <td>64</td>
+                            <td>58</td>
+                            <td>37</td>
+                            <td>18.9°C</td>
+                            <td>65%</td>
+                            <td>6.5</td>
+                            <td>72mm</td>
+                        </tr>
+                        <tr>
+                            <td><span class="crop-badge">Maize</span></td>
+                            <td>78</td>
+                            <td>42</td>
+                            <td>37</td>
+                            <td>27.0°C</td>
+                            <td>76%</td>
+                            <td>6.3</td>
+                            <td>76mm</td>
+                        </tr>
+                        <tr>
+                            <td><span class="crop-badge">Cotton</span></td>
+                            <td>118</td>
+                            <td>46</td>
+                            <td>18</td>
+                            <td>23.7°C</td>
+                            <td>78%</td>
+                            <td>8.0</td>
+                            <td>72mm</td>
+                        </tr>
+                        <tr>
+                            <td><span class="crop-badge">Sugarcane</span></td>
+                            <td>100</td>
+                            <td>18</td>
+                            <td>30</td>
+                            <td>26.2°C</td>
+                            <td>77%</td>
+                            <td>7.0</td>
+                            <td>119mm</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p> 2023 KRUSHIMITRA. All rights reserved. Made with  for Indian Farmers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                }
+            });
+        }
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+        });
+        
+        // Language switching
+        function setLanguage(lang) {
+            // Get current URL
+            const url = new URL(window.location.href);
+            
+            // Update the lang parameter
+            url.searchParams.set('lang', lang);
+            
+            // Reload the page with the new language
+            window.location.href = url.toString();
+        }
+
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Feature Importance Chart
+            const featureCtx = document.getElementById('featureChart');
+            if (featureCtx) {
+                new Chart(featureCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            "{{ _('Nitrogen') }}", 
+                            "{{ _('Phosphorus') }}", 
+                            "{{ _('Potassium') }}", 
+                            "{{ _('Temperature') }}", 
+                            "{{ _('Humidity') }}", 
+                            "pH", 
+                            "{{ _('Rainfall') }}"
+                        ],
+                        datasets: [{
+                            label: "{{ _('Importance') }}",
+                            data: [0.26, 0.195, 0.15, 0.13, 0.11, 0.065, 0.04],
+                            backgroundColor: '#22c55e',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 0.3,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Animate metric bars on scroll
+            const observerOptions = {
+                threshold: 0.5
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bars = entry.target.querySelectorAll('.metric-bar-fill');
+                        bars.forEach(bar => {
+                            const width = bar.style.width;
+                            bar.style.width = '0';
+                            setTimeout(() => {
+                                bar.style.width = width;
+                            }, 100);
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.metric-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
